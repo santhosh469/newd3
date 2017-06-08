@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Rnyoo</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="" />
+	<!--css-->
+	<link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/nice-select.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/font-awesome.css" rel="stylesheet" type="text/css" media="all" />
+	<!--js-->
+	<script src="libs/jquery.min.js"></script>
+	<script src="libs/bootstrap.min.js"></script>
+	<script src="libs/jquery.nice-select.js"></script>
+	<!--fonts-->
+	<link href="css/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/video-js.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="css/lightbox.css" rel="stylesheet" type="text/css" media="all" />    
+	<!--jQuery-->
+	<script src="libs/testrnyoo_custom.js"></script>
+	<script src="libs/jquery-ui.js"></script>
+	<script src="libs/hammer.min.js"></script>
+	<script src="libs/jquery.hammer.js"></script>
+	<script src="libs/jquery.mousewheel.min.js"></script>
+	<script src="libs/imgViewer.js"></script>
+	<script src="libs/imgNotes.js"></script>
+	<script src="libs/embed_imgNotes.js"></script>
+	<script src="libs/bootstrap.min.js"></script>
+	<script src="libs/lightbox.js"></script>
+	<script src="libs/testrnyoo_embed.js"></script>
+	<script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.6.12/videojs-contrib-hls.js"></script>
+	<!--fonts-->
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+</head>
+<body style="position: relative;">
+<!-- header section -->
+	<div class="rny-chanl-post-list-header-bar">
+		<div class="container">
+			<a><img src="images/menu.png" alt="rny-image" class="menu-icon-mb" id="menu"></a>
+			<a class="rny-logo" ><img class="rny-logo-mb" src="images/rny-logo.png" alt="rny-image"></a>
+				<div class="input-block">
+					<input class="search-bar" type="text" id="search" name="search-content" placeholder="i'm looking for...">
+					<span class="submit-searchicon"><input type="image" name="submit" src="images/search_icon.png" alt="rny-image"></span>
+					<select id="search_keywords">
+						<ul>
+							<li><option value="Keywords">Keywords</option></li>
+							<li><option value="Channels">Channels</option></li>
+							<li><option value="Locations">Locations</option></li>
+						</ul>
+					</select>
+				</div>
+			<span class="mb-searchicon"><img class="search-icon" src="images/search_icon.png" alt="rny-image"></span>
+			<a href="#" class="google-play-logo"><img class="playstore-logo-mb" src="images/play_icon.png" alt="rny-image"></a>
+		</div>
+	</div>
+<!-- header section end -->
+
+<!-- menu overlay section -->
+	<div class="menu-overlay">
+		<div class="container">
+			<div class="menu-close">
+				<img src="images/menu_close.png" alt="rny-image">
+			</div>
+			<div class="menu-overlay-content">
+				<div class="overlay-menu-list">
+					<ul>
+						<li><a href="#">DOWNLOAD</a></li>
+						<li><a href="#">GETTING STARTED</a></li>
+						<li><a href="mailto:business@rnyoo.com" target="_blank">BUSINESS</a></li>
+						<li><a href="#">PRIVACY</a></li>
+						<li><a href="#">TERMS &amp; CONDITIONS</a></li>
+						<li><a href="mailto:support@rnyoo.com" target="_blank">SUPPORT</a></li>
+						<li><a href="#">ABOUT</a></li>
+					</ul>
+				</div>
+				<div class="verification-block">
+					<div class="rny-verifydropline">
+						<p class="rny-verify-text">Want to have a verified account on Rnyoo or know how to reach your audience effectively?</p>
+						<a href="mailto:business@rnyoo.com" class="rny-dropline" target="_blank-">Drop in a line.</a>
+					</div>
+					<div class="overlay-connect-block">
+						<h1 class="overlay-h1-cls">CONNECT</h1>
+						<ul>
+							<li><a href="https://www.facebook.com/Rnyoo-220849128296067" target="_blank"><i class="fa fa-facebook fa-icon-align" aria-hidden="true"></i></a></li>
+							<li><a href="https://twitter.com/rnyoosocial" target="_blank"><i class="fa fa-twitter fa-icon-align" aria-hidden="true"></i></a></li>
+							<li><a href="https://plus.google.com/u/0/communities/116794355079467123192" target="_blank"><i class="fa fa-google-plus fa-icon-align" aria-hidden="true"></i></a></li>
+							<li><a href="https://www.youtube.com/channel/UCxHyHpsRxmfdcZKje0jx4Yg" target="_blank"><i class="fa fa-youtube fa-icon-align" aria-hidden="true"></i></a></li>
+							<li><a href="mailto:support@rnyoo.com" target="_blank"><i class="fa fa-envelope-o fa-icon-align" aria-hidden="true"></i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+<!-- menu overlay section end -->
+
+<!-- mobile search view section(click on search icon mobile and tablet)) -->
+	<div class="mobile-search-view">
+		<div class="mb-search-block">
+			<div class="close-btn">
+				<span class="search-close"><img src="images/cancel_small.png"></span>
+			</div>
+			<div class="searchbar">
+				<input class="mb-search-bar" type="text" id="search" name="search-content" placeholder="i'm looking for...">
+			</div>
+			<div class="keywords-block">
+				<span class="keywords">look within</span>
+				<ul>
+					<li><a href="#"><img src="images/hashtag.png" alt="rny-image"> Keywords</a></li>
+					<li><a href="#"><img src="images/channels.png" alt="rny-image"> Channels</a></li>
+					<li><a href="#"><img src="images/locations.png" alt="rny-image"> Locations</a></li>
+				</ul>
+			</div>
+			<div class="searc-btn-cls">
+				<input class="mb-search-btn" type="button" name="submit" value="SEARCH">
+			</div>
+		</div>
+	</div>
+<!-- mobile search view section(click on search icon) end -->
+
+	<div class="container rny-post-container">
+		<div class="home-channel-container">
+			<img src="images/home_channel.png" alt="rny-image"><br>
+			<span>POSTED IN PUBLIC</span>
+		</div>
+		<div class="row">
+			<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+				<div class="rny-postinfo-block">
+					<div class="pub-img-block" style="background-image: url(images/image-4.jpg);background-size: cover;background-repeat: no-repeat;background-position: top center;">
+						<span class="tag-btn"><img src="images/timer_icon.png" alt="rny-image"> < 20 Hrs</span>
+						<span class="post-details-url" id="fullview_modal"></span><!-- post url anchor tag-->
+					</div>
+					<div class="rny-postinfo-content">
+						<div class="hotspot-num-block">
+							<span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> 2</span>
+							<span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> 5</span>
+						</div>
+						<div class="rny-trend-collection-block">
+							<span class="post-seasons-collections">Seasons New Collections<a href="" class="postinfo-hashtags">#clickable</a> at <a href="" class="postinfo-hashtags">#somehashtag</a></span>
+						</div>
+						<div class="postupdate-time-block">
+							<span class="postinfo-time"> by</span>
+							<a href=""><span class="rny-asphalt postinfo-publisher-name"> Kalanikethan</span></a>
+							<span class="postinfo-updatetimeDot">&#183;</span>
+							<span class="postinfo-updatetime">12 hrs ago</span><br>
+							<span class="postupdated-time">last updated 3hrs ago</span>
+						</div>
+						<div class="rny-likes-views-block">
+							<ul class="rny-likes">
+								<li class="popUp"><a class="rny-darkgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 250 likes</a></li>
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 309 views</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+				<div class="rny-postinfo-block">
+					<div class="pub-img-block" style="background-image: url(images/image-3.jpg);background-size: cover;background-repeat: no-repeat;background-position: center;">
+						<a href="#" class="post-details-url"></a><!-- post url anchor tag-->
+					</div>
+					<div class="rny-postinfo-content">
+						<div class="hotspot-num-block">
+							<span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> 2</span>
+							<span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> 5</span>
+						</div>
+						<div class="rny-trend-collection-block">
+							<span class="post-seasons-collections">Seasons New Collections<a href="" class="postinfo-hashtags">#clickable</a> at <a href="" class="postinfo-hashtags">#somehashtag</a></span>
+						</div>
+						<div class="postupdate-time-block">
+							<span class="postinfo-time"> by</span>
+							<a href=""><span class="rny-asphalt postinfo-publisher-name"> Kalanikethan</span></a>
+							<span class="postinfo-updatetimeDot">&#183;</span>
+							<span class="postinfo-updatetime">12 hrs ago</span><br>
+							<span class="postupdated-time">last updated 3hrs ago</span>
+						</div>
+						<div class="rny-likes-views-block">
+							<ul class="rny-likes">
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 250 likes</a></li>
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 309 views</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+				<div class="rny-postinfo-block">
+					<div class="pub-img-block" style="background-image: url(images/image-2.jpg);background-size: cover;background-repeat: no-repeat;background-position: center;">
+						<a href="#" class="post-details-url"></a><!-- post url anchor tag-->
+					</div>
+					<div class="rny-postinfo-content">
+						<div class="hotspot-num-block">
+							<span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> 2</span>
+							<span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> 5</span>
+						</div>
+						<div class="rny-trend-collection-block">
+							<span class="post-seasons-collections">Seasons New Collections<a href="" class="postinfo-hashtags">#clickable</a> at <a href="" class="postinfo-hashtags">#somehashtag</a></span>
+						</div>
+						<div class="postupdate-time-block">
+							<span class="postinfo-time"> by</span>
+							<a href=""><span class="rny-asphalt postinfo-publisher-name"> Kalanikethan</span></a>
+							<span class="postinfo-updatetimeDot">&#183;</span>
+							<span class="postinfo-updatetime">12 hrs ago</span><br>
+							<span class="postupdated-time">last updated 3hrs ago</span>
+						</div>
+						<div class="rny-likes-views-block">
+							<ul class="rny-likes">
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 250 likes</a></li>
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 309 views</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+				<div class="rny-postinfo-block">
+					<div class="pub-img-block" style="background-image: url(images/image-1.jpg);background-size: cover;background-repeat: no-repeat;background-position: center;">
+						<a href="#" class="post-details-url"></a><!-- post url anchor tag-->
+					</div>
+					<div class="rny-postinfo-content">
+						<div class="hotspot-num-block">
+							<span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> 2</span>
+							<span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> 5</span>
+						</div>
+						<div class="rny-trend-collection-block">
+							<span class="post-seasons-collections">Seasons New Collections<a href="" class="postinfo-hashtags">#clickable</a> at <a href="" class="postinfo-hashtags">#somehashtag</a></span>
+						</div>
+						<div class="postupdate-time-block">
+							<span class="postinfo-time"> by</span>
+							<a href=""><span class="rny-asphalt postinfo-publisher-name"> Kalanikethan</span></a>
+							<span class="postinfo-updatetimeDot">&#183;</span>
+							<span class="postinfo-updatetime">12 hrs ago</span><br>
+							<span class="postupdated-time">last updated 3hrs ago</span>
+						</div>
+						<div class="rny-likes-views-block">
+							<ul class="rny-likes">
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 250 likes</a></li>
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 309 views</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+				<div class="rny-postinfo-block">
+					<div class="pub-img-block" style="background-image: url(images/image-5.jpg);background-size: cover;background-repeat: no-repeat;background-position: center;">
+						<a href="#" class="post-details-url"></a><!-- post url anchor tag-->
+					</div>
+					<div class="rny-postinfo-content">
+						<div class="hotspot-num-block">
+							<span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> 2</span>
+							<span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> 5</span>
+						</div>
+						<div class="rny-trend-collection-block">
+							<span class="post-seasons-collections">Seasons New Collections<a href="" class="postinfo-hashtags">#clickable</a> at <a href="" class="postinfo-hashtags">#somehashtag</a></span>
+						</div>
+						<div class="postupdate-time-block">
+							<span class="postinfo-time">by</span>
+							<a href=""><span class="rny-asphalt postinfo-publisher-name"> Kalanikethan</span></a>
+							<span class="postinfo-updatetimeDot">&#183;</span>
+							<span class="postinfo-updatetime">12 hrs ago</span><br>
+							<span class="postupdated-time">last updated 3hrs ago</span>
+						</div>
+						<div class="rny-likes-views-block">
+							<ul class="rny-likes">
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 250 likes</a></li>
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 309 views</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+				<div class="rny-postinfo-block">
+					<div class="pub-img-block" style="background-image: url(images/image-1.jpg);background-size: cover;background-repeat: no-repeat;background-position: center;">
+						<a href="#" class="post-details-url"></a><!-- post url anchor tag-->
+					</div>        
+					<div class="rny-postinfo-content">
+						<div class="hotspot-num-block">
+							<span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> 2</span>
+							<span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> 5</span>
+						</div>
+						<div class="rny-trend-collection-block">
+							<span class="post-seasons-collections">Seasons New Collections<a href="" class="postinfo-hashtags">#clickable</a> at <a href="" class="postinfo-hashtags">#somehashtag</a></span>
+						</div>
+						<div class="postupdate-time-block">
+							<span class="postinfo-time"> by</span>
+							<a href=""><span class="rny-asphalt postinfo-publisher-name"> Kalanikethan</span></a>
+							<span class="postinfo-updatetimeDot">&#183;</span>
+							<span class="postinfo-updatetime">12 hrs ago</span><br>
+							<span class="postupdated-time">last updated 3hrs ago</span>
+						</div>
+						<div class="rny-likes-views-block">
+							<ul class="rny-likes">
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 250 likes</a></li>
+								<li><a class="rny-darkgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 309 views</a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="more-btn-block">
+			<a class="more-btn">&#183; &#183; &#183; more</a>
+			<div id="loader">
+				<img src="images/loader.gif" alt="rny-image">
+			</div>
+		</div>
+	</div>
+	<div class="footer-block" style="position: relative;">
+		<div class="footer-connect-block">
+			<h1 class="footer-h1-cls">CONNECT</h1>
+			<ul>
+				<li><a href="https://www.facebook.com/Rnyoo-220849128296067" target="_blank"><i class="fa fa-facebook fa-icon-align" aria-hidden="true"></i></a></li>
+				<li><a href="https://twitter.com/rnyoosocial" target="_blank"><i class="fa fa-twitter fa-icon-align" aria-hidden="true"></i></a></li>
+				<li><a href="https://plus.google.com/u/0/communities/116794355079467123192" target="_blank"><i class="fa fa-google-plus fa-icon-align" aria-hidden="true"></i></a></li>
+				<li><a href="https://www.youtube.com/channel/UCxHyHpsRxmfdcZKje0jx4Yg" target="_blank"><i class="fa fa-youtube fa-icon-align" aria-hidden="true"></i></a></li>
+				<li><a href="mailto:support@rnyoo.com" target="_blank"><i class="fa fa-envelope-o fa-icon-align" aria-hidden="true"></i></a></li>
+				
+			</ul>
+		</div>
+		<div class="rny-about-block">
+			<ul>
+				<li><a href="#">DOWNLOAD</a></li>
+				<li><a href="#">GETTING STARTED</a></li>
+				<li><a href="mailto:business@rnyoo.com" target="_blank">BUSINESS</a></li>
+				<li><a href="#">PRIVACY</a></li>
+				<li><a href="#">TERMS &amp; CONDITIONS</a></li>
+				<li><a href="mailto:support@rnyoo.com" target="_blank">SUPPORT</a></li>
+				<li><a href="#">ABOUT</a></li>
+			</ul>
+		</div>
+		<div class="rny-copyright-block">
+			<ul>
+				<li><a href="#">&#169; 2016 Rnyoo Inc.</a></li>
+				<li><a href="#">SAN JOSE CA</a></li>
+			</ul>
+		</div>
+		<div class="scroll-top">
+			<img src="images/scroll-arrow.png" alt="rny-image">
+		</div>
+	</div>
+
+<!-- download app popup -->
+	<div id="rny_app_download">
+		<div class="app-download-wrapper">
+			<span class="rny-app-close"><img src="images/cancel.png"></span>
+			<div class="download-appImg">
+				<img src="images/mobile_icon.png">
+			</div>
+			<div class="download-appTxt">
+				<span class="app-download-text">Want to do more with Rnyoo?</span>
+				<a href="#"><img src="images/play_icon.png" width="150px;" alt="rny-image"></a>
+			</div>
+		</div>
+	</div>
+<!-- download app  popup end  -->
+
+<!-- fullview modal -->
+	<div id="fullview_modal_container">
+	<!-- <span class="rny-app-close" id="fullview_close" style="margin-top: 0px;"><img src="images/cancel.png"></span> -->
+	<section class="rny-modalview-container">
+		<div class="container">
+		<div class="row rny-row-container">
+			<div class="col-lg-8 col-md-8 col-xl-8" style="padding: 0px;">
+				<div class="rny-zoomblock rny-mobileview-zoomblock">
+					<ul>
+						<li><img src="images/back_fv.png" alt="rny-image" id="fullview_close" class="rny-embed-icon"></li>
+						<li><a href="#" class="psotinfo_showhide">Post Info</a></li>
+						<li><button class="rny-mobileviewzoommbutton" id="normal_image"><span>N</span></button></li>
+						<li><button class="rny-mobileviewzoommbutton" id="zoom_out_button"><span> -</span></button></li>
+						<li><button class="rny-mobileviewzoommbutton" id="zoom_in_button"><span> +</span></button></li>
+						<li class="fullviewZwidth"><span class="mobile-post-img" id="hide"><img src="images/hide.png" alt="rny-image"> hide</span><span class="mobile-post-img" id="show"><img src="images/show.png" alt="rny-image">show</span></li>
+					</ul>
+				</div>
+				<div class="rny-img-outercontainer">
+					<img class="img-responsive imgCls" id="pod_image" src="images/image-1.jpg" alt="rny-image">
+				</div>
+			</div>
+			<div class="col-lg-4 col-md-4 col-xl-4 show-postinfo" id="postInfo">
+				<!-- <div class="rny-postembedblock">
+					<ul>
+						<li><span id="fullview_close"><img src="images/back_fv.png"></span></li>
+					</ul>
+				</div> -->
+				<div class="rny-flex" style="min-height: 500px;">
+					<div class="rny-header">
+						<img src="images/icon_clock.png" alt="rny-image">
+						<span>< than 20 hours </span>
+					</div>
+					<div class="rny-publisher">
+						<span class="rny-avatar"> <img src="images/avatar_img.jpg" alt="rny-image"> </span>
+						<span class="rny-pub-name"><a href="">Kalanikethan</a></span><br>
+					</div>
+					<div class="rny-post-description">Ethnic saree festival<br>
+						<a class="rny-green" href="">#Kalanikethan</a><a class="rny-green" href="">#wedding collection</a> sommetext comes here<a class="rny-green" href="">#clothing#festive</a>
+					</div>
+					<div class="rny-post-timeDetails">
+						<span class="rny-lightgrey">posted</span> <br>
+						<span class="rny-midgrey">12 hours ago</span>
+						<span class="rny-lightgrey rny-post-updatetime">(Updated 3 hours ago)</span>
+					</div>
+					<div class="rny-post-locationDetails">
+						<span class="rny-lightgrey">picture taken at</span><br>
+						<span class="rny-midgrey">Hyderabad central, Panjagutta, Hyderabad</span>
+					</div>
+					<div class="rny-btn-flex">
+						<a href="" class="rny-btn">channel1</a>
+						<a href="" class="rny-btn">fashion</a>
+						<a href="" class="rny-btn">lifestyle</a>
+						<a href="" class="rny-btn">Channel2</a>
+					</div>
+					<div class="rny-commentSection">
+						<ul class="rny-likes">
+							<li><a class="rny-lightgrey popUp" href="#"><img src="images/like.png" alt="rny-image"> 1.5 k</a></li>
+							<li><a class="rny-lightgrey popUp" href="#"><img src="images/view.png" alt="rny-image"> 154 views</a></li>
+						</ul>
+						<ul class="rny-comments">
+						<li><a class="rny-lightgrey popUp" href="#">14 post comments</a></li>
+							<li class="rny-comment-lidot">&#183;</li>
+							<li><a class="rny-lightgrey popUp" href="#">21 hotspot comments</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+<!-- download app popup  -->
+  <div id="rny_app_download">
+    <div class="app-download-wrapper">
+      <span class="rny-app-close">close</span>
+      <div class="download-appImg">
+        <img src="images/mobile_icon.png">
+      </div>
+      <div class="download-appTxt">
+        <span class="app-download-text">Want to do more with Rnyoo?</span>
+        <a href="#"><img src="images/play_icon.png" width="150px;" alt="rny-image"></a>
+      </div>
+    </div>
+  </div>
+<!-- download app  popup end  -->
+	<div id="modalVideo" class="modal1">
+		<div class="modal-content1">
+			<span class="closeVideo"><img src="images/cancel.png"></span>
+			<video id="rnyooVideo" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+			</p>
+			</video>
+		</div>
+	</div>
+	<div id="modalAudio" class="modal1">
+		<div class="modal-content1">
+			<span class="closeAudio"><img src="images/cancel.png"></span>
+			<audio id="rnyooAudio" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+			<p class="vjs-no-js">
+				To view this video please enable JavaScript, and consider upgrading to a web browser that
+				<a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 Audio</a>
+			</p>
+			</audio>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.psotinfo_showhide').click(function(event){
+		event.stopPropagation();
+		$(".show-postinfo").slideToggle();
+	});
+
+	// $(".fullview-postInfo").on("click", function (event) {
+	// 	event.stopPropagation();
+	// });
+
+	// post info block will close click out side of block
+	$(document).on("click", function () {
+		$(".fullview-postInfo").hide();
+	});
+
+	// embed iframes color toggle  
+	$('.embed-pixel-choose span').click(function (e) {
+		e.preventDefault();
+		$(this).addClass('textcolor').siblings().removeClass('textcolor');
+	});
+
+	//embed iframes toggle
+	$(".embed-pixel-choose-640").click(function(){
+		$("#iframe_640").show();
+		$("#iframe_480").hide();
+	});
+
+	$(".embed-pixel-choose-480").click(function(){
+		$("#iframe_640").hide();
+		$("#iframe_480").show();
+	});
+
+	$(document).on("click", ".popUp", function(){
+		$("#rny_app_download").stop().fadeIn(500);
+	});
+
+	$(".rny-app-close").click(function(){
+		$("#rny_app_download").stop().fadeOut(500);
+	});
+
+	$(window).scroll(function() {
+  		if($(this).scrollTop() != 0) {
+			$('.scroll-top').fadeIn(); 
+  		} else {
+			$('.scroll-top').fadeOut();
+  		}
+	});
+
+	// fullview modal
+	$(document).on("click", "#fullview_modal",function(){
+  var adapter =  
+  {"visible_b":true,"uid_s":"UHzpD7WI8BypRELWDZe8j3QQFsc","screenName_s":"dsk","rpostid_s":"B9gJ5xmRNeZfP9BKVk9yWdz8qz3","rpid_s":"bdd08c5be8494d9a9ae0d8c8687ea204","publicSharing_b":true,"postLocation":{"postLng":"78.4317175","postLat":"17.4275992"},"postDescription_s":"Trump's war room #syria #maralago #worldpolitics","pod":{"zoomScale":1,"rpid_s":"bdd08c5be8494d9a9ae0d8c8687ea204","published_b":true,"podImage":{"webjpgUrl":"https://rnyoodevusers.s3.amazonaws.com/UHzpD7WI8BypRELWDZe8j3QQFsc/vaultfiles/rnya_05454499fee54f478007cc33fdc1b55b_400x400.jpg","thumbnailUrl":"https://rnyoodevusers.s3.amazonaws.com/UHzpD7WI8BypRELWDZe8j3QQFsc/vaultfiles/thumbs/thumb-rnya_05454499fee54f478007cc33fdc1b55b.webp","takenAt":"","source":"gallery","resolution":"1024x682","mimeType":"image/webp","jpgUrl":"https://rnyoodevusers.s3.amazonaws.com/UHzpD7WI8BypRELWDZe8j3QQFsc/vaultfiles/rnya_05454499fee54f478007cc33fdc1b55b.jpg","imgId":"rnya_05454499fee54f478007cc33fdc1b55b","baseUrl":"https://rnyoodevusers.s3.amazonaws.com/UHzpD7WI8BypRELWDZe8j3QQFsc/vaultfiles/rnya_05454499fee54f478007cc33fdc1b55b.webp"},"parentId":"null","ownership_s":"locked","ownedBy_s":"UHzpD7WI8BypRELWDZe8j3QQFsc","orientation":"0","name_t":"bdd08c5be8494d9a9ae0d8c8687ea204","location_s":"Hyderabad, India","locationCoordinates":{},"keywords_t":"","hotspots":{"bcbe28a88a5b4decad7a75506dc2ee74":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#27AE60","location":{"y":114,"x":539},"lastUpdatedAt_l":1491896746164,"keywords_ts":"","hotspotLabel_ts":"Spicer","hotspotId":"bcbe28a88a5b4decad7a75506dc2ee74","hotspotDescription_ts":"Sean Spicer is White House Press Secretary","editable":false,"createdAt_l":1491896115267,"clickUrl":"https://goo.gl/30Je1a"},"ae3cc729c68248aab09eed9336290df5":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#19C919","location":{"y":493,"x":358},"lastUpdatedAt_l":1491896342871,"keywords_ts":"","hotspotLabel_ts":"Priebus","hotspotId":"ae3cc729c68248aab09eed9336290df5","hotspotDescription_ts":"Reince Priebus is White House Chief of Staff","editable":false,"createdAt_l":1491895849019,"clickUrl":"https://goo.gl/wVOYay"},"a8fdbd5af66a4e0e98dd59409a45627a":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#F04D45","location":{"y":367,"x":862},"lastUpdatedAt_l":1491896350357,"keywords_ts":"","hotspotLabel_ts":"Powell","hotspotId":"a8fdbd5af66a4e0e98dd59409a45627a","hotspotDescription_ts":"Dina Powell is Deputy National Security Advisor","editable":false,"createdAt_l":1491895893763,"clickUrl":"https://goo.gl/a3NeeR"},"9d5b295e015f463ba4b1afbd401006c5":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#FFCD02","location":{"y":194,"x":707},"lastUpdatedAt_l":1491896878190,"keywords_ts":"","hotspotLabel_ts":"Tillerson","hotspotId":"9d5b295e015f463ba4b1afbd401006c5","hotspotDescription_ts":"Rex Tillerson is Secretary of State","editable":false,"createdAt_l":1491895808082,"clickUrl":"https://goo.gl/uvtwGg"},"917b33f441a44ae8997b00d1f5da639d":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#00B5FF","location":{"y":251,"x":199},"lastUpdatedAt_l":1491896825110,"keywords_ts":"","hotspotLabel_ts":"Kushner","hotspotId":"917b33f441a44ae8997b00d1f5da639d","hotspotDescription_ts":"Jared Kushner is Senior Advisor to the President","editable":false,"createdAt_l":1491895987274,"clickUrl":"https://goo.gl/ywNq3w"},"84f2987b58e247598258bb407c155f1b":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#FF8C00","location":{"y":250,"x":551},"lastUpdatedAt_l":1491896868834,"keywords_ts":"","hotspotLabel_ts":"President","hotspotId":"84f2987b58e247598258bb407c155f1b","hotspotDescription_ts":"Donald Trump is the President of the United States of America","editable":false,"createdAt_l":1491895752387,"clickUrl":"https://goo.gl/yZOsC3"},"64ece546c1b744c8845e5ebcbdfcbd6c":{"zoomFactor":0,"zeroHotspot_b":true,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"location":{"y":0,"x":0},"lastUpdatedAt_l":1491895732644,"keywords_ts":"","hotspotLabel_ts":"pod","hotspotId":"64ece546c1b744c8845e5ebcbdfcbd6c","editable":false,"createdAt_l":1491895732644},"57bbc837c9b5483ea8b1eef10489fad4":{"zoomFactor":1,"zeroHotspot_b":false,"sharable":true,"platformUpdatedOn":"android","platformCreatedOn":"android","media":{"video":[],"images":[],"docs":[],"audio":[]},"markerColor":"#FFFF00","location":{"y":164,"x":864},"lastUpdatedAt_l":1491896364069,"keywords_ts":"","hotspotLabel_ts":"Bannon","hotspotId":"57bbc837c9b5483ea8b1eef10489fad4","hotspotDescription_ts":"Steve Bannon is White House Chief Strategist","editable":false,"createdAt_l":1491895936726,"clickUrl":"https://goo.gl/zD2Gtq"}},"draft_b":false,"deviceId_s":"352136062218397","description_t":"","createdBy_s":"UHzpD7WI8BypRELWDZe8j3QQFsc","channel_t":""},"noOfViews":167,"media":{"video":[],"images":[],"docs":[],"audio":[]},"location_s":"Mar-A-Lago Boulevard, Santa Rosa Beach, FL, United States","lastUpdatedAt_l":1491897073000,"keywords_s":"#syria,#maralago,#worldpolitics","hotspotsShared":[],"createdAt_l":1491897073000,"channel_s":null,"changeLog":{"deleted":[],"changed":["published_b","draft_b"],"added":[]},"avatar":"https://rnyoodevusers.s3.amazonaws.com/UHzpD7WI8BypRELWDZe8j3QQFsc/avatars/ProfilePic.webp","apiVersion":"v1"};
+	adapterBind(adapter);
+
+	$("#fullview_modal_container").show();
+		$("body").css({"overflow":"hidden"});
+	});
+
+	$("#fullview_close").click(function(){
+		$("#fullview_modal_container").hide();
+		$("body").css({"overflow":"auto"});
+		$("#NoteDialog").css("display","none");
+	});
+
+});
+</script>
+</html>
+<script src="libs/testrnyoo_custom.js"></script>
+<script src="libs/testrnyoo.js"></script>

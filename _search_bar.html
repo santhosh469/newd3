@@ -1,0 +1,85 @@
+<div class="rny-chanl-post-list-header-bar">
+		<div class="container">
+			  <a><img src="<%= static_path(@conn, "/images/menu.png") %>" class="menu-icon-mb" id="menu"></a>
+			  <a class="rny-logo" href="/posts" ><img class="rny-logo-mb" src="<%= static_path(@conn, "/images/rny-logo.png") %>"></a>
+        <%=  form_tag("/form_search") do %>
+            <div class="input-block">
+				        <input class="search-bar" type="text" id="search" name="search-content" placeholder="i'm looking for...">
+                <span class="submit-searchicon">
+                    <input type="image" name="submit"src="<%= static_path(@conn, "/images/search_icon.png") %>" >
+                </span>
+                <select id="search_keywords" name="search-in">
+                    <ul>
+                        <li><option value="keywords">Keywords</option></li>
+                        <li><option value="channels">Channels</option></li>
+                        <li><option value="locations">Locations</option></li>
+                    </ul>
+                </select>
+            </div>
+			  <% end %>
+              <span class="mb-searchicon"><img class="search-icon" src="<%= static_path(@conn, "/images/search_icon.png") %>" alt="rny-image"></span>
+			  <a href="#" class="google-play-logo">
+                <img class="playstore-logo-mb" src="<%= static_path(@conn, "/images/icon_google-play-1.png") %>" >
+            </a>
+		</div>
+</div>
+<div class="menu-overlay">
+    <div class="container">
+        <div class="menu-close">
+            <img src="<%= static_path(@conn, "/images/menu_close.png") %>" alt="">
+        </div>
+        <div class="menu-overlay-content">
+            <div class="overlay-menu-list">
+                <ul>
+                    <li><a href="/download">DOWNLOAD</a></li>
+                    <li><a href="/start">GETTING STARTED</a></li>
+                    <li><a href="/business">BUSINESS</a></li>
+                    <li><a href="mailto:business@rnyoo.com">SUPPORT</a></li>
+                    <li><a href="/terms_of_use">TERMS OF USE</a></li>
+                    <li><a href="/privacy_policy">PRIVACY</a></li>
+                    <li><a href="/about">ABOUT</a></li>
+                </ul>
+            </div>
+            <div class="verification-block">
+                <div class="rny-verifydropline">
+                    <span class="rny-verify-text">Want to have a verified account on Rnyoo or know how to reach your audience effectively?</span>
+                    <br>
+                    <a href="mailto:business@rnyoo.com" class="rny-dropline" target="_blank">Drop in a line.</a>
+                </div>
+                <div class="overlay-connect-block">
+                    <h1 class="overlay-h1-cls">CONNECT</h1>
+                    <ul>
+                        <li><a href="https://www.facebook.com/Rnyoo-220849128296067" target="_blank"><i class="fa fa-facebook fa-icon-align" aria-hidden="true"></i></a></li>
+                        <li><a href="https://plus.google.com/u/0/communities/116794355079467123192" target="_blank"><i class="fa fa-google-plus fa-icon-align" aria-hidden="true"></i></a></li>
+                        <li><a href="https://twitter.com/rnyoosocial" target="_blank"><i class="fa fa-twitter fa-icon-align" aria-hidden="true"></i></a></li>
+                        <li><a href="" target="_blank"><i class="fa fa-envelope-o fa-icon-align" aria-hidden="true"></i></a></li>
+                        <li><a href="https://www.youtube.com/channel/UCxHyHpsRxmfdcZKje0jx4Yg"><i class="fa fa-youtube fa-icon-align" aria-hidden="true"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="mobile-search-view">
+    <div class="mb-search-block">
+        <div class="close-btn">
+            <span class="search-close"><img src="<%= static_path(@conn, "/images/cancel_small.png") %>"></span>
+        </div>
+        <%=  form_tag("/form_search") do %>
+        <div class="searchbar">
+            <input class="mb-search-bar" type="text" id="search" name="search-content" placeholder="i'm looking for...">
+        </div>
+        <div class="keywords-block">
+            <span class="keywords">look within</span>
+            <ul>
+                <li><a><img src="<%= static_path(@conn, "/images/hashtag.png") %>"> Keywords</a></li>
+                <li><a><img src="<%= static_path(@conn, "/images/channels.png") %>"> Channels</a></li>
+                <li><a><img src="<%= static_path(@conn, "/images/locations.png") %>"> Locations</a></li>
+            </ul>
+        </div>
+        <div class="searc-btn-cls">
+            <input class="mb-search-btn" type="button" name="submit" value="SEARCH">
+        </div>
+        <% end %>
+    </div>
+</div>

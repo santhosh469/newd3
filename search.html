@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+    <head>
+	      <title>Rnyoo</title>
+	      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+	      <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	      <meta name="keywords" content="" />
+	      <!--css-->
+	      <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+	      <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+	      <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+	      <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+	      <!--fonts-->
+	      <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body>
+        <!-- header section -->
+	      <%= render Rnyoo.SharedView, "_search_bar.html", conn: @conn %>
+        <!-- header section end -->
+	      <div class="container rny-post-container">
+		        <div class="home-channel-container">
+			          <img src="images/home_channel.png" alt=""><br>
+			          <span>SEARCH RESULTS</span>
+		        </div>
+		        <div class="row">
+			          <%= for post <- @posts do %>
+				            <div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+					              <div class="rny-postinfo-block">
+						                <div class="pub-img-block" style="background-image: url(<%= post["jpgUrl"] %>);background-size: cover;background-repeat: no-repeat;background-position: top center; ">
+							                  <%= if post["postTtl"] do %>
+								                    <span class="tag-btn"><img src="<%= static_path(@conn, "/images/timer_icon.png") %>" > < <%= convert_secs_to_datetime_stamp(post["postTtl"]) %></span>
+								                <% else %>
+								                <% end %>
+								                <a href="/post/fv/<%= post["rpostid_s"] %>" class="post-details-url"></a>
+						                </div>
+						                <div class="rny-postinfo-content">
+							                  <div class="hotspot-num-block">
+								                    <%= if post["postQuestionCount"] do %>
+									                      <span class="collection-text"><img src="<%= static_path(@conn, "/images/img-q.png") %>"> <%= post["postQuestionCount"] %></span>
+								                    <% end %>
+									                  <span class="collection-text"><img src="<%= static_path(@conn, "/images/icon_hotspot.png") %>"> <%= post["hotspotCount"] - 1 %></span>
+							                  </div>
+							                  <div class="rny-trend-collection-block">
+								                    <span class="post-seasons-collections">
+									                      <% processedDescription =  Regex.replace(~r/#(\w+)/, post["postDescription_s"], "<a href='/search?in=keywords&q=\\1' class='postinfo-hashtags'>#\\1</a>") %>
+										                    <%=  raw(processedDescription) %>
+								                    </span>
+							                  </div>
+							                  <div class="postupdate-time-block">
+								                    <span class="postinfo-time"> by</span>
+								                    <a href="/users/<%= post["screenName_s"] %>"><span class="rny-asphalt postinfo-publisher-name"> <%= post["screenName_s"] %></span></a>
+								                    <span class="postinfo-updatetimeDot">&#183;</span>
+								                    <span class="postinfo-updatetime">
+									                      <%= convert_secs_to_datetime_stamp(post["createdAt_l"]) %>
+								                    </span><br>
+								                    <span class="postupdated-time">last updated <%= convert_secs_to_datetime_stamp(post["lastUpdatedAt_l"]) %></span>
+							                  </div>
+							                  <div class="rny-likes-views-block">
+								                    <ul class="rny-likes">
+									                      <%= if post["postLikeCount"] do %>
+										                        <li class="popUp"><span class="rny-darkgrey popUp"><img src="<%= static_path(@conn, "/images/like.png") %>"> <%= post["postLikeCount"] %> likes</span></li>
+										                    <% end %>
+									                      <%= if post["noOfViews"] do %>
+										                        <li><span class="rny-darkgrey popUp"><img src="<%= static_path(@conn, "/images/view.png") %>"> <%= post["noOfViews"] %> views</span></li>
+										                    <% end  %>
+								                    </ul>
+							                  </div>
+						                </div>
+					              </div>
+				            </div>
+			          <% end %>
+		        </div>
+            <%= if @next_start !== -1 do %>
+		        <div class="more-btn-block">
+			          <a class="more-btn">&#183; &#183; &#183; more</a>
+			          <div id="loader">
+				            <img src="<%= static_path(@conn, "/images/loader.gif") %>">
+			          </div>
+		        </div>
+            <% end %>
+		        <div class="end-message-block">
+			          <div class="end-message" style="display:none;" id="end-message">You have reached the end  !!</div>
+		        </div>
+	      </div>
+	      <%=  render Rnyoo.SharedView, "_footer.html", conn: @conn %>
+	      <!-- download app popup -->
+	      <div id="rny_app_download">
+		        <div class="app-download-wrapper">
+			          <span class="rny-app-close"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+			          <div class="download-appImg">
+				            <img src="<%= static_path(@conn, "/images/mobile_icon.png") %>">
+			          </div>
+			          <div class="download-appTxt">
+				            <span class="app-download-text" >Want to do more with Rnyoo?</span>
+				            <a href="#"><img src="<%= static_path(@conn, "/images/play_icon.png") %>" width="150px;" alt="rny-image"></a>
+			          </div>
+		        </div>
+	      </div>
+	      <input type="hidden" name="nextStart" id="nextStart" value="20" >
+    </body>
+
+    <script type="text/javascript">
+	   function hashtagText(text){
+	       var replacedText = text.replace(/#(\w+)/g, '<a href="/search?in=keywords&q=$1" class="postinfo-hashtags">#$1</a>');
+		     return replacedText;
+	   }
+	   $(".more-btn").click(function() {
+		     var nextStart = $("#nextStart").val();
+		     var morePublicTimeline = '/s?q=2&start=' + nextStart;
+		     $.ajax({
+			       get:'POST',
+			       url: morePublicTimeline,
+			       beforeSend:function(html){
+				         //Load the spinner here
+				         $("#loader").show();
+				         $(".more-btn").hide();
+			       },
+			       success:function(data){
+				         // After loading the data unload the spinner
+				         var generatepostContainer = "";
+				         inextStart = data.next_start;
+				         $("#nextStart").val(inextStart);
+					       for (var i in data.posts) {
+						         var createdAt = data.posts[i].createdAt_l;
+						         var lastUpdatedAt = data.posts[i].lastUpdatedAt_l;
+						         var timevalue = data.posts[i].hasOwnProperty('postTtl');
+						         var postQuestion = data.posts[i].hasOwnProperty('postQuestionCount');
+						         var humanizedCreatedAt = humanizedDateString(createdAt);
+						         var humanizedUpdatedAt = humanizedDateString(lastUpdatedAt);
+						         var humanizedTtl;
+						         generatepostContainer = generatepostContainer + '<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container"><div class="rny-postinfo-block"><div class="pub-img-block" style="background-image: url('+data.posts[i].jpgUrl+');background-size: cover;background-repeat: no-repeat;background-position: top center;"><a href="/post/fv/'+data.posts[i].rpostid_s+'" class="post-details-url"></a>';
+						         if (timevalue === false) {
+							           generatepostContainer = generatepostContainer + '</div>';
+						         }
+						         else{
+							           humanizedTtl = humanizedDateString( data.posts[i].postTtl);
+							           generatepostContainer = generatepostContainer + '<span class="tag-btn"><img src="images/timer_icon.png" alt="rny-image">'+humanizedTtl+'</span></div>';
+						         }
+						         if (postQuestion === true) {
+							           generatepostContainer = generatepostContainer + '<div class="rny-postinfo-content"><div class="hotspot-num-block"><span class="collection-text"><img src="images/img-q.png" alt="rny-image"> '+data.posts[i].postQuestionCount+' </span><span class="collection-text"><img src="images/icon_hotspot.png" alt="rny-image"> '+parseInt((data.posts[i].hotspotCount)-1)+'</span></div>';
+						         }
+						         else{
+							           generatepostContainer = generatepostContainer + '<div class="rny-postinfo-content"><div class="hotspot-num-block"><span class="collection-text"><img src="images/icon_hotspot.png" alt="rny-image"> '+parseInt((data.posts[i].hotspotCount)-1)+' </span></div>';
+						         }
+						         generatepostContainer = generatepostContainer +'<div class="rny-trend-collection-block"><span class="post-seasons-collections">'+hashtagText(data.posts[i].postDescription_s)+'</div><div class="postupdate-time-block"><span class="postinfo-time"> by</span><a href="/users/'+ data.posts[i].screenName_s  +'"><span class="rny-asphalt postinfo-publisher-name"> '+data.posts[i].screenName_s+'</span></a><span class="postinfo-updatetimeDot">&#183;</span><span class="postinfo-updatetime">'+humanizedCreatedAt+'</span><br><span class="postupdated-time">last updated '+humanizedUpdatedAt+'</span></div>';
+						         if (data.posts[i].postLikeCount === undefined) {
+							           generatepostContainer = generatepostContainer +'<div class="rny-likes-views-block"><ul class="rny-likes"><li><span class="rny-darkgrey popUp"><img src="images/view.png" alt="rny-image"> '+data.posts[i].noOfViews+' views</span></li></ul></div>';
+						         }
+						         else if(data.posts[i].noOfViews === undefined) {
+							           generatepostContainer = generatepostContainer +'<div class="rny-likes-views-block"><ul class="rny-likes"><li><span class="rny-darkgrey popUp"><img src="images/like.png" alt="rny-image"> '+data.posts[i].postLikeCount+' likes</span></li></ul></div>';
+						         }
+						         else{
+							           generatepostContainer = generatepostContainer +'<div class="rny-likes-views-block"><ul class="rny-likes"><li><span class="rny-darkgrey popUp"><img src="images/like.png" alt="rny-image"> '+data.posts[i].postLikeCount+' likes</span></li><li><span class="rny-darkgrey popUp"><img src="images/view.png" alt="rny-image"> '+data.posts[i].noOfViews+' views</span></li></ul></div>';
+						         }
+						         generatepostContainer = generatepostContainer + '</div></div></div>';
+					       }
+				         $(".row").append(generatepostContainer);
+				         $("#loader").hide();
+				         if(inextStart === -1){
+					           $(".more-btn").hide();
+					           $("#end-message").show();
+				         }
+				         else{
+					           $(".more-btn").show();
+				         }
+			       }
+         });
+	   });
+    </script>

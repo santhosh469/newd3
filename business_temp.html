@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Rnyoo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="" />
+		<!--css-->
+		<link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+		<link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+		<!--js-->
+		<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+		<script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+		<!--fonts-->
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<!-- header section -->
+	      <%= render Rnyoo.SharedView, "_search_bar.html", conn: @conn %>
+		<!-- header section end -->
+		<!-- terms and conditions content section -->
+		<div class="rny-business-banner">
+        	<div class="rny-business-banner-text">Reach Greater Heights. With Rnyoo.</div>
+    	</div>
+    <div class="container">
+        <div class="rny-business-text">
+            Rnyoo offers excellent opportunities for Businesses to disrupt their content strategy, advertising efforts and for collaboration.
+            <br>Fill the form and we will get back to you to discuss further.
+        </div>
+        <div class="hiddent_text">
+            Thanks for your enquiry. We will get back to you soon.
+        </div>
+        <!-- <form action=""> -->
+            <div class="col-lg-6 col-md-6 rny-business-form">
+                <span class="name-error">Name should not be empt OR give proper name</span>
+                <span class="name-characters-error">accepts only characters (both cases) and spaces.</span>
+                <input type="text" id="nameval" name="name" class="rny-business-input" placeholder="Your Name">
+            </div>
+            <div class="col-lg-6 col-md-6 rny-business-form">
+                <span class="email-error">Email should not empty OR give proper mail syntax</span>
+                <span class="email-valid-error">Give standard email format</span>
+                <input type="email" id="emailval" name="email" class="rny-business-input" placeholder="Your Email Address">
+                <span class="rny-form-sug-text">Preferably work email</span>
+            </div>
+            <div class="col-lg-6 col-md-6 rny-business-form">
+                <span class="num-error">Number should not be empty</span>
+                <span class="num-valid-error">accepts only numbers, spaces, ),+,(</span>
+                <input type="tel" id="numval" name="number" class="rny-business-input" placeholder="Your Phone Number">
+                <span class="rny-form-sug-text">Add country code eg. 91XXXXXXXXXX</span>
+            </div>
+            <div class="col-lg-6 col-md-6 rny-business-form">
+                <span class="selectone-error">Please select one option</span>
+                <input type="button" class="rny-business-input select-btn" id="select_one_option" value="I am a ...">
+                <span class="rny-select-option">SELECT ONE</span>
+                <div class="selection-box">
+                    <button class="selected-one" id="s1" onclick="selectOne('I am a Publisher')">Publisher</button>
+                    <button class="selected-one" id="s2" onclick="selectOne('I am a Advertiser')">Advertiser</button>
+                    <button class="selected-one" id="s3" onclick="selectOne('I am a Brand')">Brand</button>
+                    <button class="selected-one" id="s4" onclick="selectOne('I am a Enterprise')">Enterprise</button>
+                    <button class="selected-one" id="s5" onclick="selectOne('I am a Explorer')">Explorer</button>
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12 rny-business-textarea">
+            <span class="comment-error">Comment should not be empty</span>
+                <textarea id="commentval" name="comment" rows="5" maxlength="500" placeholder="How would you want us to help ?" id="comment_box" class="rny-business-comment-box"></textarea>
+            </div>
+            <div class=" col-lg-12 col-md-12 rny-formsubmitt">
+                <input type="submit" class="sub-btn" onclick="formSubmit()">
+            </div>
+        <!-- </form> -->
+    </div>
+		<!-- end terms and conditions content section -->
+	    <%=  render Rnyoo.SharedView, "_footer.html", conn: @conn %>
+	</body>
+	<script type="text/javascript">
+$(document).ready(function() {
+    // search key words in input box(dropdown pluggin)
+    $('select').niceSelect();
+
+    // menu overlay
+    $("#menu").click(function() {
+        $(".menu-overlay").fadeIn(1000);
+    });
+
+    $(".menu-close").click(function() {
+        $(".menu-overlay").fadeOut(1000);
+    });
+
+    // mobile and tablet search
+    $(".search-icon").click(function() {
+        $(".mobile-search-view").fadeIn(1000);
+    });
+
+    $(".search-close").click(function() {
+        $(".mobile-search-view").fadeOut(1000);
+    });
+});
+</script>
+</html>

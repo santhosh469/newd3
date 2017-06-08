@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Rnyoo</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="" />
+        <!--css and js-->
+        <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+        <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+        <link href="https://vjs.zencdn.net/5.12.6/video-js.css" rel="stylesheet">
+        <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+        <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+        <!--video js-->
+        <script src="https://vjs.zencdn.net/5.12.6/video.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.6.12/videojs-contrib-hls.js"></script>
+        <!--fonts-->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+    </head>
+    <!--these inline styles are mandatory for video and audio players-->
+    <style type="text/css">
+     .video-js {
+         font-size: 10px;
+         color: #fff;
+     }
+     .vjs-default-skin .vjs-big-play-button {
+         font-size: 3em;
+         line-height: 80px;
+         height: 80px;
+         width: 80px;
+         border: 4px solid #00AEEF;
+         border-radius: 50%;
+         left: 50%;
+         top: 50%;
+         margin-left: -40px;
+         margin-top: -40px;
+     }
+     .video-js .vjs-control-bar,
+     .video-js .vjs-big-play-button,
+     .video-js .vjs-menu-button .vjs-menu-content {
+         background-color: #00AEEF;
+         background-color: #00aeef;
+     }
+     .video-js .vjs-slider {
+         background-color: #00AEEF;
+         background-color: rgba(0, 174, 239, 0.5);
+     }
+     .video-js .vjs-volume-level,
+     .video-js .vjs-play-progress,
+     .video-js .vjs-slider-bar {
+         background: #fff;
+     }
+     .video-js .vjs-load-progress {
+         background: ligthen(#00AEEF, 25%);
+         background: rgba(0, 174, 239, 0.5);
+     }
+     .video-js .vjs-load-progress div {
+         background: ligthen(#00AEEF, 50%);
+         background: rgba(0, 174, 239, 0.75);
+     }
+     .vjs-big-play-button {
+         border-radius: 50% !important;
+         height: 50px !important;
+         width: 50px !important;
+         margin-right: -25px !important;
+         margin-left: -25px !important;
+     }
+     #modalAudio .vjs-big-play-button {
+         left: 50%;
+         top: -40px;
+     }
+    </style>
+
+    <body>
+        <!-- header section -->
+        <%= render Rnyoo.SharedView, "_search_bar.html", conn: @conn %>
+        <!-- header section end -->
+        <div class="container rny-post-container">
+            <div class="home-channel-container">
+                <img src="/images/home_channel.png" alt="">
+                <br>
+                <span>POSTED IN PUBLIC</span>
+            </div>
+            <div class="row">
+                <%= for post <- @posts do %>
+                    <div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container">
+                        <div class="rny-postinfo-block">
+                            <div class="pub-img-block" style="background-image: url(<%= post["jpgUrl"] %>);background-size: cover;background-repeat: no-repeat;background-position: top center;">
+                                <%= if post["postTtl"] do %>
+                                    <span class="tag-btn"><img src="<%= static_path(@conn, "/images/timer_icon.png") %>" > < <%= convert_secs_to_datetime_stamp(post["postTtl"]) %></span>
+                                <% else %>
+                                <% end %>
+                                <span class="post-details-url" onclick="getmodalContent('<%= post["rpostid_s"] %>')"></span>
+                                <!--instead of anchor tag line have to add "<span class="post-details-url" onclick="getmodalContent('parameter')"></span>"-->
+                            </div>
+                            <div class="rny-postinfo-content">
+                                <div class="hotspot-num-block">
+                                    <%= if post["postQuestionCount"] do %>
+                                        <span class="rny-hotspots"><img src="<%= static_path(@conn, "/images/img-q.png") %>"> <%= post["postQuestionCount"] %></span>
+                                    <% end %>
+                                    <span class="rny-hotspots"><img src="<%= static_path(@conn, "/images/icon_hotspot.png") %>"> <%= post["hotspotCount"] - 1 %></span>
+                                </div>
+                                <div class="rny-trend-collection-block">
+                                    <span class="post-seasons-collections">
+                                        <% processedDescription =  Regex.replace(~r/#(\w+)/, post["postDescription_s"], "<a href='/search?in=keywords&q=\\1' class='postinfo-hashtags'>#\\1</a>") %>
+                                        <%=  raw(processedDescription) %>
+                                    </span>
+                                </div>
+                                <div class="postupdate-time-block">
+                                    <span class="postinfo-time"> by</span>
+                                    <a href="/users/<%= post["screenName_s"] %>"><span class="rny-asphalt postinfo-publisher-name"> <%= post["screenName_s"] %></span></a>
+                                    <span class="postinfo-updatetimeDot">&#183;</span>
+                                    <span class="postinfo-updatetime">
+                                        <%= convert_secs_to_datetime_stamp(post["createdAt_l"]) %>
+                                    </span>
+                                    <br>
+                                    <span class="postupdated-time">last updated <%= convert_secs_to_datetime_stamp(post["lastUpdatedAt_l"]) %></span>
+                                </div>
+                                <div class="rny-likes-views-block">
+                                    <ul class="rny-likes">
+                                        <%= if post["postLikeCount"] do %>
+                                            <li class="popUp"><span class="rny-darkgrey popUp"><img src="<%= static_path(@conn, "/images/like.png") %>"> <%= post["postLikeCount"] %> likes</span></li>
+                                        <% end %>
+                                        <%= if post["noOfViews"] do %>
+                                            <li><span class="rny-darkgrey popUp"><img src="<%= static_path(@conn, "/images/view.png") %>"> <%= post["noOfViews"] %> views</span></li>
+                                        <% end  %>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% end %>
+            </div>
+            <div class="more-btn-block">
+                <a class="more-btn">&#183; &#183; &#183; more</a>
+                <div id="loader">
+                    <img src="<%= static_path(@conn, "/images/loader.gif") %>">
+                </div>
+            </div>
+            <div class="end-message-block">
+                <div class="end-message" style="display:none;" id="end-message">You have reached the end !!</div>
+            </div>
+        </div>
+        <%=  render Rnyoo.SharedView, "_footer.html", conn: @conn %>
+        <!-- fullview modal -->
+        <div id="fullview_modal_container">
+            <div id="modal_loader">
+                <span class="modal-text">Please wait. We are Rnyooing;<br><img src="images/loader.gif" alt="rny-image"></span>
+            </div>
+            <div class="container">
+                <div class="row rny-row-container rny-flex2">
+                </div>
+            </div>
+        </div>
+
+        <div id="modalVideo" class="modal1">
+            <div class="modal-content1">
+                <span class="closeVideo"><img src="images/cancel.png"></span>
+                <video id="rnyooVideo" class="video-js vjs-big-play-centered" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                </video>
+            </div>
+        </div>
+        <div id="modalAudio" class="modal1">
+            <div class="modal-content1-audio">
+                <span class="closeAudio"><img src="images/cancel.png"></span>
+                <audio id="rnyooAudio" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": true, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 Audio</a>
+                    </p>
+                </audio>
+            </div>
+        </div>
+        <!-- download app popup -->
+        <div id="rny_app_download">
+            <div class="app-download-wrapper">
+                <span class="rny-app-close"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+                <div class="download-appImg">
+                    <img src="<%= static_path(@conn, "/images/mobile_icon.png") %>">
+                </div>
+                <div class="download-appTxt">
+                    <span class="app-download-text">Want to do more with Rnyoo?</span>
+                    <a href="#"><img src="<%= static_path(@conn, "/images/play_icon.png") %>" width="150px;" alt="rny-image"></a>
+                </div>
+            </div>
+        </div>
+        <input type="hidden" name="nextStart" id="nextStart" value="20">
+    </body>
+    <script type="text/javascript">
+     function hashtagText(text) {
+         var replacedText = text.replace(/#(\w+)/g, '<a href="/search?in=keywords&q=$1" class="postinfo-hashtags">#$1</a>');
+         return replacedText;
+     }
+     $(".more-btn").click(function() {
+         var nextStart = $("#nextStart").val();
+         var morePublicTimeline = '/public_timeline?start=' + nextStart;
+         $.ajax({
+             get: 'POST',
+             url: morePublicTimeline,
+             beforeSend: function(html) {
+                 //Load the spinner here
+                 $("#loader").show();
+                 $(".more-btn").hide();
+             },
+             success: function(data) {
+                 // After loading the data unload the spinner
+                 var generatepostContainer = "";
+                 inextStart = data.next_start;
+                 $("#nextStart").val(inextStart);
+                 for (var i in data.posts) {
+                     var createdAt = data.posts[i].createdAt_l;
+                     var lastUpdatedAt = data.posts[i].lastUpdatedAt_l;
+                     var timevalue = data.posts[i].hasOwnProperty('postTtl');
+                     var postQuestion = data.posts[i].hasOwnProperty('postQuestionCount');
+                     var humanizedCreatedAt = humanizedDateString(createdAt);
+                     var humanizedUpdatedAt = humanizedDateString(lastUpdatedAt);
+                     var humanizedTtl;
+                     generatepostContainer = generatepostContainer + '<div class="col-lg-6 col-sm-12 col-xs-12 rny-pub-container"><div class="rny-postinfo-block"><div class="pub-img-block" style="background-image: url(' + data.posts[i].jpgUrl + ');background-size: cover;background-repeat: no-repeat;background-position: top center;"><span class="post-details-url" onclick="getmodalContent(\'' + data.posts[i].rpostid_s + '\')"></span>'; //instead of anchor tag line have to add "<span class="post-details-url" onclick="getmodalContent('parameter')"></span>"//
+                     if (timevalue === false) {
+                         generatepostContainer = generatepostContainer + '</div>';
+                     } else {
+                         humanizedTtl = humanizedDateString(data.posts[i].postTtl);
+                         generatepostContainer = generatepostContainer + '<span class="tag-btn"><img src="images/timer_icon.png" alt="rny-image">' + humanizedTtl + '</span></div>';
+                     }
+                     if (postQuestion === true) {
+                         generatepostContainer = generatepostContainer + '<div class="rny-postinfo-content"><div class="hotspot-num-block"><span class="rny-hotspots"><img src="images/img-q.png" alt="rny-image"> ' + data.posts[i].postQuestionCount + ' </span><span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> ' + parseInt((data.posts[i].hotspotCount) - 1) + '</span></div>';
+                     } else {
+                         generatepostContainer = generatepostContainer + '<div class="rny-postinfo-content"><div class="hotspot-num-block"><span class="rny-hotspots"><img src="images/icon_hotspot.png" alt="rny-image"> ' + parseInt((data.posts[i].hotspotCount) - 1) + ' </span></div>';
+                     }
+                     generatepostContainer = generatepostContainer + '<div class="rny-trend-collection-block"><span class="post-seasons-collections">' + hashtagText(data.posts[i].postDescription_s) + '</div><div class="postupdate-time-block"><span class="postinfo-time"> by</span><a href="/users/' + data.posts[i].screenName_s + '"><span class="rny-asphalt postinfo-publisher-name"> ' + data.posts[i].screenName_s + '</span></a><span class="postinfo-updatetimeDot">&#183;</span><span class="postinfo-updatetime">' + humanizedCreatedAt + '</span><br><span class="postupdated-time">last updated ' + humanizedUpdatedAt + '</span></div>';
+                     if (data.posts[i].postLikeCount === undefined) {
+                         generatepostContainer = generatepostContainer + '<div class="rny-likes-views-block"><ul class="rny-likes"><li><span class="rny-darkgrey popUp"><img src="images/view.png" alt="rny-image"> ' + data.posts[i].noOfViews + ' views</span></li></ul></div>';
+                     } else if (data.posts[i].noOfViews === undefined) {
+                         generatepostContainer = generatepostContainer + '<div class="rny-likes-views-block"><ul class="rny-likes"><li><span class="rny-darkgrey popUp"><img src="images/like.png" alt="rny-image"> ' + data.posts[i].postLikeCount + ' likes</span></li></ul></div>';
+                     } else {
+                         generatepostContainer = generatepostContainer + '<div class="rny-likes-views-block"><ul class="rny-likes"><li><span class="rny-darkgrey popUp"><img src="images/like.png" alt="rny-image"> ' + data.posts[i].postLikeCount + ' likes</span></li><li><span class="rny-darkgrey popUp"><img src="images/view.png" alt="rny-image"> ' + data.posts[i].noOfViews + ' views</span></li></ul></div>';
+                     }
+                     generatepostContainer = generatepostContainer + '</div></div></div>';
+                 }
+                 $(".row").append(generatepostContainer);
+                 $("#loader").hide();
+                 if (inextStart === -1) {
+                     $(".more-btn").hide();
+                     $("#end-message").show();
+                 } else {
+                     $(".more-btn").show();
+                 }
+             }
+         });
+     });
+     $(document).on("click", "#fullview_close", function(e) {
+         e.preventDefault();
+         $("body, html").css({
+             "position": "static",
+             "width": "100%",
+             "height": "100%"
+         });
+         $win.scrollTop(page_offsetY); // global variable defined in rnyoo.js
+         $("#fullview_modal_container").scrollTop(0);
+         $("#NoteDialog").css("display", "none");
+         $(".viewport").hide();
+         $("#fullview_modal_container").hide();
+     });
+     $(document).keyup(function(key) {
+         if (key.keyCode == 27) {
+             $("#NoteDialog").css("display", "none");
+             $(".viewport").hide();
+             $("body, html").css({
+                 "position": "static",
+                 "width": "100%",
+                 "height": "100%"
+             });
+             $win.scrollTop(page_offsetY); // global variable defined in rnyoo.js
+             $("#fullview_modal_container").scrollTop(0);
+             videojs('rnyooVideo').pause();
+             videojs('rnyooAudio').pause();
+             $("#modalVideo").hide();
+             $("#modalAudio").hide();
+             $("#fullview_modal_container").hide();
+         }
+     });
+    </script>

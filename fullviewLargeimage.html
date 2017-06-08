@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html>
+<html style="background-color: #080808 !important;">
+
+<head>
+    <title>Rnyoo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="" />
+    <!--css-->
+    <link href="css/bootstrap.css" rel="stylesheet" type="text/css" media="all">
+    <link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/jquery-ui.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/video-js.css" rel="stylesheet" type="text/css" media="all" />
+    <link href="css/lightbox.css" rel="stylesheet" type="text/css" media="all" />
+    <!--jQuery-->
+    <script src="libs/jquery.min.js"></script>
+    <script src="libs/jquery-ui.js"></script>
+    <script src="libs/hammer.min.js"></script>
+    <script src="libs/jquery.hammer.js"></script>
+    <script src="libs/jquery.mousewheel.min.js"></script>
+    <script src="libs/imgViewer.js"></script>
+    <script src="libs/imgNotes.js"></script>
+    <script src="libs/embed_imgNotes.js"></script>
+    <script src="libs/bootstrap.min.js"></script>
+    <script src="libs/lightbox.js"></script>
+    <script src="libs/rnyoo.js"></script>
+    <script src="libs/moment.min.js"></script>
+    <script src="libs/Autolinker.js"></script>
+    <script src="http://vjs.zencdn.net/5.8.8/video.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.6.12/videojs-contrib-hls.js"></script>
+    <!--fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+</head>
+<style type="text/css">
+.video-js {
+    font-size: 10px;
+    color: #fff;
+}
+
+.vjs-default-skin .vjs-big-play-button {
+    font-size: 3em;
+    line-height: 80px;
+    height: 80px;
+    width: 80px;
+    border: 4px solid #00AEEF;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -40px;
+    margin-top: -40px;
+}
+
+.video-js .vjs-control-bar,
+.video-js .vjs-big-play-button,
+.video-js .vjs-menu-button .vjs-menu-content {
+    background-color: #00AEEF;
+    background-color: #00aeef;
+}
+
+.video-js .vjs-slider {
+    background-color: #00AEEF;
+    background-color: rgba(0, 174, 239, 0.5);
+}
+
+.video-js .vjs-volume-level,
+.video-js .vjs-play-progress,
+.video-js .vjs-slider-bar {
+    background: #fff;
+}
+
+.video-js .vjs-load-progress {
+    background: ligthen(#00AEEF, 25%);
+    background: rgba(0, 174, 239, 0.5);
+}
+
+.video-js .vjs-load-progress div {
+    background: ligthen(#00AEEF, 50%);
+    background: rgba(0, 174, 239, 0.75);
+}
+
+.vjs-big-play-button {
+    border-radius: 50% !important;
+    height: 50px !important;
+    width: 50px !important;
+    margin-right: -25px !important;
+    margin-left: -25px !important;
+}
+
+#modalAudio .vjs-big-play-button {
+    left: 50%;
+    top: -40px;
+}
+</style>
+
+<body style="background-color: #080808 !important;">
+    <div class="container rny-container" style="margin-top: 0px !important;">
+        <div class="row">
+            <div class="rny-flex2">
+                <div class="rny-mobileview-zoomblock" id="zoomb">
+                    <ul>
+                        <!-- <li><img src="images/back.png" alt="rny-image" id="fullview_back" class="rny-embed-icon"></li> -->
+                        <li><a href="#" class="psotinfo_showhide">Post Info</a></li>
+                        <li>
+                            <button class="rny-mobileviewzoommbutton" id="normal_image"><span>N</span></button>
+                        </li>
+                        <li>
+                            <button class="rny-mobileviewzoommbutton" id="zoom_out_button"><span> -</span></button>
+                        </li>
+                        <li>
+                            <button class="rny-mobileviewzoommbutton" id="zoom_in_button"><span> +</span></button>
+                        </li>
+                        <li class="fullviewZwidth"><span class="mobile-post-img" id="hide"><img src="images/hide.png" alt="rny-image"> hide</span><span class="mobile-post-img" id="show"><img src="images/show.png" alt="rny-image">show</span></li>
+                        <li><img src="images/embed.png" alt="rny-image" class="rny-embed-icon"></li>
+                    </ul>
+                </div>
+                <div class="rny-fullviewimg-container">
+                    <img class="img-responsive imgCls" id="pod_image" src="" alt="rny-image">
+                    <span class="tap-to-view" id="showhotspots">
+        TAP TO VIEW
+      </span>
+      <!-- <div id="NoteDialog"><div id="NoteDialog1"></div></div> -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ios-detector">
+        <div style="width:80%;display:inline-block;text-align: left;">Pinch-Zoom and other features on the image might not work as expected on iOS Safari.
+            <br> For Best Experience View this on Chrome or other modern mobile browsers</div> <span id="closeios_detector">close</span></div>
+    <!-- post info block(onclick post info this block will dsplay)  -->
+    <div class="fullview-postInfo" id="postInfo" style="display: none;">
+        <div class="rny-flex" style="min-height: 500px;">
+            <div class="rny-header"><img src="images/icon_clock.png" alt="rny-image">
+                <span>< than 20 hours </span>
+            </div>
+            <div class="rny-publisher">
+                <span class="rny-avatar"> <img src="images/avatar_img.jpg" alt="rny-image"> </span>
+                <span class="rny-pub-name"><a href="">Kalanikethan</a></span>
+                <br>
+            </div>
+            <div class="rny-post-description">Ethnic saree festival
+                <br>
+                <a class="rny-green" href="">#Kalanikethan</a><a class="rny-green" href="">#weddingcollection</a> sommetext vcomes here<a class="rny-green" href="">#clothing#festive</a>
+            </div>
+            <div class="rny-post-timeDetails">
+                <span class="rny-lightgrey">posted</span>
+                <br>
+                <span class="rny-midgrey">12 hours ago</span>
+                <span class="rny-lightgrey rny-post-updatetime">(Updated 3 hours ago)</span>
+            </div>
+            <div class="rny-post-locationDetails">
+                <span class="rny-lightgrey">picture taken at</span>
+                <br>
+                <span class="rny-midgrey">Hyderabad central, Panjagutta, Hyderabad</span>
+            </div>
+            <div class="rny-btn-flex">
+                <a href="#" class="rny-btn">channel1</a>
+                <a href="#" class="rny-btn">fashion</a>
+                <a href="#" class="rny-btn">lifestyle</a>
+                <a href="#" class="rny-btn">Channel2</a>
+            </div>
+            <div class="rny-commentSection">
+                <ul class="rny-likes">
+                    <li class="popUp">
+                        <a class="rny-lightgrey" href="#"><img src="images/like.png" alt="rny-image"> 1.5 k</a>
+                    </li>
+                    <li class="popUp">
+                        <a class="rny-lightgrey" href="#"><img src="images/view.png" alt="rny-image"> 154 views</a>
+                    </li>
+                </ul>
+                <ul class="rny-comments">
+                    <li class="popUp"><a class="rny-lightgrey" href="#">14 post comments</a></li>
+                    <li class="rny-comment-lidot">&#183;</li>
+                    <li class="popUp"><a class="rny-lightgrey" href="#">21 hotspot comments</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- post info block end  -->
+    <div id="modalVideo" class="modal1">
+        <div class="modal-content1">
+            <span class="closeVideo"><img src="images/cancel.png"></span>
+            <video id="rnyooVideo" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+        </div>
+    </div>
+    <div id="modalAudio" class="modal1">
+        <!-- Modal content -->
+        <div class="modal-content1-audio">
+            <span class="closeAudio"><img src="images/cancel.png"></span>
+            <audio id="rnyooAudio" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 Audio</a>
+                </p>
+            </audio>
+        </div>
+    </div>
+    <!--embed block-->
+    <!-- <div class="embed-modal" id="embedModal">
+        <div class="container embed-container">
+            <span id="close_id" class="close" tabindex='-1'><img src="images/cancel.png"></span>
+            <div class="embed-size">choose a size</div>
+            <div class="embed-pixel-choose">
+                <span class="embed-pixel-choose-640 textcolor">640px</span>
+                <span class="embed-pixel-choose-480">480px</span>
+            </div>
+            <div class="embed-block">
+                <div class="iframe-class1" id="iframe_640">
+                    <iframe width="100%" height="700px" frameBorder="0" class="iframe-class1" src="640iframe.html"></iframe>
+                </div>
+                <div class="iframe-class2" id="iframe_480">
+                    <iframe width="100%" height="700px" frameBorder="0" src="480iframe.html"></iframe>
+                </div>
+            </div>
+        </div>
+    </div> -->
+    <!--embed block end-->
+    <!-- download app popup  -->
+    <div id="rny_app_download">
+        <div class="app-download-wrapper">
+            <span class="rny-app-close"><img src="images/cancel.png"></span>
+            <div class="download-appImg">
+                <img src="images/mobile_icon.png">
+            </div>
+            <div class="download-appTxt">
+                <span class="app-download-text">Want to do more with Rnyoo?</span>
+                <a href="#"><img src="images/play_icon.png" width="150px;" alt="rny-image"></a>
+            </div>
+        </div>
+    </div>
+    <!-- download app  popup end  -->
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+lightbox.option({
+      'wrapAround': true
+    });
+    var adapter = {
+        "visible_b": true,
+        "uid_s": "JYezPOld0pdxFZFdbHusIqqH1Mp",
+        "screenName_s": "dsr1",
+        "rpostid_s": "KDs7TQzdM5E2nrt3KXKFjiP4akq",
+        "rpid_s": "8c09304377f04795a7c79dee077b0dcf",
+        "publicSharing_b": true,
+        "postTtl": 1494399300240,
+        "postQuestionCount": 1,
+        "postLocation": {
+            "postLng": "78.4317175",
+            "postLat": "17.4275992"
+        },
+        "postLikeCount": 1,
+        "postDescription_s": "Test notifications for following posts.",
+        "podCommentCount": 4,
+        "pod": {
+            "zoomScale": 1,
+            "rpid_s": "8c09304377f04795a7c79dee077b0dcf",
+            "published_b": true,
+            "podImage": {
+                "webjpgUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/rnya_63c3405760104e1abed3426ae3721ea0_400x400.jpg",
+                "thumbnailUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/thumbs/thumb-rnya_63c3405760104e1abed3426ae3721ea0.webp",
+                "takenAt": "",
+                "source": "gallery",
+                "resolution": "",
+                "mimeType": "image/webp",
+                "jpgUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/rnya_63c3405760104e1abed3426ae3721ea0.jpg",
+                "imgId": "rnya_63c3405760104e1abed3426ae3721ea0",
+                "baseUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/rnya_63c3405760104e1abed3426ae3721ea0.webp"
+            },
+            "parentId": "null",
+            "ownership_s": "locked",
+            "ownedBy_s": "JYezPOld0pdxFZFdbHusIqqH1Mp",
+            "orientation": "0",
+            "name_t": "8c09304377f04795a7c79dee077b0dcf",
+            "location_s": "Hyderabad, India",
+            "locationCoordinates": {},
+            "keywords_t": "",
+            "hotspots": {
+                "5810ccdb2c1040618f2009442106479a": {
+                    "zoomFactor": 1,
+                    "zeroHotspot_b": false,
+                    "sharable": true,
+                    "platformUpdatedOn": "android",
+                    "platformCreatedOn": "android",
+                    "media": {
+                        "video": [],
+                        "images": [{
+                            "imageUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/ac554625-a2d4-4738-bc9b-fc59a27c2f44.jpg",
+                            "imageId": "6ae5dd2ae4334eeeb46bc33dac4a2350"
+                        }],
+                        "docs": [],
+                        "audio": []
+                    },
+                    "markerColor": "#FFFF00",
+                    "location": {
+                        "y": 64,
+                        "x": 213
+                    },
+                    "lastUpdatedAt_l": 1494315594423,
+                    "keywords_ts": "",
+                    "hotspotLabel_ts": "#3",
+                    "hotspotId": "5810ccdb2c1040618f2009442106479a",
+                    "hotspotDescription_ts": "",
+                    "editable": false,
+                    "createdAt_l": 1494309469917,
+                    "clickUrl": ""
+                },
+                "4d6875e8c7e34510910efa8635e014a9": {
+                    "zoomFactor": 0,
+                    "zeroHotspot_b": true,
+                    "sharable": true,
+                    "platformUpdatedOn": "android",
+                    "platformCreatedOn": "android",
+                    "media": {
+                        "video": [],
+                        "images": [],
+                        "docs": [],
+                        "audio": []
+                    },
+                    "location": {
+                        "y": 0,
+                        "x": 0
+                    },
+                    "lastUpdatedAt_l": 1494308992109,
+                    "keywords_ts": "",
+                    "hotspotLabel_ts": "pod",
+                    "hotspotId": "4d6875e8c7e34510910efa8635e014a9",
+                    "editable": false,
+                    "createdAt_l": 1494308992109
+                },
+                "21490f44eef84489bed0166cc82782f2": {
+                    "zoomFactor": 1,
+                    "zeroHotspot_b": false,
+                    "sharable": true,
+                    "platformUpdatedOn": "android",
+                    "platformCreatedOn": "android",
+                    "media": {
+                        "video": [{
+                            "videoUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/61035245-7b9f-4737-ba8a-b10b8222d958/61035245-7b9f-4737-ba8a-b10b8222d958.mp4",
+                            "videoId": "36d9d1fe9f2f4603a68d11a4094c12ba",
+                            "streamfile": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/61035245-7b9f-4737-ba8a-b10b8222d958/61035245-7b9f-4737-ba8a-b10b8222d958.m3u8"
+                        }],
+                        "images": [{
+                            "imageUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/02713edd-680a-4241-a672-3b83e5a4da95.jpg",
+                            "imageId": "cc3aa0c5c89149afbc42fcef3194542c"
+                        }, {
+                            "imageUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/43724aa4-7f93-44f5-a882-e27cb8c83d95.jpg",
+                            "imageId": "6b08ad3a1c694ac5891fe9a39f41603b"
+                        }, {
+                            "imageUrl": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/vaultfiles/c99b8bba-4f08-4e29-a781-de688cb44353.jpg",
+                            "imageId": "c6cf7f2ca4734f99a2d53c13997aeddf"
+                        }],
+                        "docs": [],
+                        "audio": []
+                    },
+                    "markerColor": "#FFFF00",
+                    "location": {
+                        "y": -10,
+                        "x": 154
+                    },
+                    "lastUpdatedAt_l": 1494309479435,
+                    "keywords_ts": "",
+                    "hotspotLabel_ts": "Test1",
+                    "hotspotId": "21490f44eef84489bed0166cc82782f2",
+                    "hotspotDescription_ts": "Test data here",
+                    "editable": false,
+                    "createdAt_l": 1494309177207,
+                    "clickUrl": ""
+                },
+                "101c0f259a5e45149bfd0306807e1a5a": {
+                    "zoomFactor": 1,
+                    "zeroHotspot_b": false,
+                    "sharable": true,
+                    "platformUpdatedOn": "android",
+                    "platformCreatedOn": "android",
+                    "media": {
+                        "video": [],
+                        "images": [],
+                        "docs": [],
+                        "audio": []
+                    },
+                    "markerColor": "#2DAEAC",
+                    "location": {
+                        "y": 18,
+                        "x": -25
+                    },
+                    "lastUpdatedAt_l": 1494309474623,
+                    "keywords_ts": "",
+                    "hotspotLabel_ts": "Test2",
+                    "hotspotId": "101c0f259a5e45149bfd0306807e1a5a",
+                    "hotspotDescription_ts": "",
+                    "editable": false,
+                    "createdAt_l": 1494309192056,
+                    "clickUrl": ""
+                }
+            },
+            "draft_b": false,
+            "deviceId_s": "357215061417245",
+            "description_t": "",
+            "createdBy_s": "JYezPOld0pdxFZFdbHusIqqH1Mp",
+            "channel_t": ""
+        },
+        "noOfViews": 49,
+        "media": {
+            "video": [],
+            "images": [],
+            "docs": [],
+            "audio": []
+        },
+        "location_s": "Canada",
+        "lastUpdatedAt_l": 1494315603000,
+        "keywords_s": "",
+        "hotspotsShared": [],
+        "hotspotStats": {
+            "5810ccdb2c1040618f2009442106479a": {
+                "commentCount": 1
+            },
+            "21490f44eef84489bed0166cc82782f2": {
+                "commentCount": 5
+            },
+            "101c0f259a5e45149bfd0306807e1a5a": {
+                "commentCount": 3
+            }
+        },
+        "createdAt_l": 1494309254000,
+        "channel_s": "Fashion",
+        "changeLog": {
+            "deleted": [],
+            "changed": [
+                ["hotspots", "5810ccdb2c1040618f2009442106479a", "location"],
+                ["hotspots", "5810ccdb2c1040618f2009442106479a", "media"],
+                ["hotspots", "5810ccdb2c1040618f2009442106479a", "lastUpdatedAt_l"]
+            ],
+            "added": []
+        },
+        "avatar": "https://cdn.rnyoo.net/JYezPOld0pdxFZFdbHusIqqH1Mp/avatars/ProfilePic-1494244925355.png",
+        "apiVersion": "v1"
+    };
+    rnyooDataBind(adapter);
+    isIos();
+
+    //pod image resize for adjusting the screen
+
+    $('.psotinfo_showhide').click(function(event) {
+        event.stopPropagation();
+        $(".fullview-postInfo").slideToggle();
+    });
+    $(".fullview-postInfo").on("click", function(event) {
+        event.stopPropagation();
+    });
+    // post info block will close click out side of block
+    $(document).on("click", function() {
+        $(".fullview-postInfo").hide();
+    });
+
+    // download app popup
+    $(".popUp").click(function() {
+        $("#rny_app_download").show();
+    });
+    $(".rny-app-close").click(function() {
+        $("#rny_app_download").hide();
+    });
+
+    var img_h, screen_h, container_h, zoombar_h;
+    img_h = parseInt($("img#pod_image").css("height"));
+    screen_h = parseInt($(window).height()); //2px difference (borderwith 2px missing from screen height) 
+    container_h = parseInt($(".rny-fullviewimg-container").css("height"));
+    // console.log(container_h);
+    zoombar_h = parseInt($('#zoomb').css("height"));
+    if (img_h > screen_h) {
+        $("img#pod_image").css("max-height", screen_h - zoombar_h);
+        $("img#pod_image").css("max-width", "100%");
+        $(".rny-fullviewimg-container").css("height", screen_h - zoombar_h);
+    } else {
+        $("img#pod_image").css("max-height", "100%");
+        $("img#pod_image").css("max-width", "100%");
+        $(".rny-fullviewimg-container").css("height", screen_h - zoombar_h);
+    }
+});
+</script>
+
+</html>

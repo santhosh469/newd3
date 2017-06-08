@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Rnyoo Pod Viewer </title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="keywords" content="" />
+
+        <link href="https://vjs.zencdn.net/5.12.6/video-js.css" rel="stylesheet">
+        <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+        <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+        <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+        <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+        <script src="https://vjs.zencdn.net/5.12.6/video.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.6.12/videojs-contrib-hls.js"></script>
+        <!--fonts-->
+        <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+    </head>
+    <body style="background-color: #fff !important">
+        <div class="container embed-iframe480-container">
+            <div class="rny-embed-zoomblock">
+                <ul>
+                    <li><button class="rny-zoommbutton" id="normal_image"><span class="rny-white">N</span></button></li>
+                    <li>zoom<button class="rny-zoommbutton" id="zoom_out_button"><span class="rny-white"> -</span></button></li>
+                    <li>zoom<button class="rny-zoommbutton" id="zoom_in_button"><span class="rny-white"> +</span></button></li>
+                    <li><span class="post-img" id="hide" style="color: #34495e;"><img src="<%= static_path(@conn, "/images/hide_embd.png") %>" alt="rny-image">hide</span>
+                        <span class="post-img" id="show" style="color: #34495e;"><img src="<%= static_path(@conn, "/images/show_embd.png") %>" alt="rny-image">show</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="rny-embed-img-outercontainer" style="position: relative;">
+                <img class="img-responsive embed-imgCls" id="embed_pod_image" src="<%= @responseDict["pod"]["podImage"]["jpgUrl"] %>" alt="rny-image">
+                <span class="tap-to-view" id="showhotspots">
+                TAP TO VIEW
+            </span>
+            </div>
+            <div class="embed-inner-container">
+                <div class="rny-post-description">
+                    <% processedDescription =  Regex.replace(~r/#(\w+)/, @responseDict["postDescription_s"], "<a target='_blank' href='/search?in=keywords&q=\\1' class='postinfo-hashtags'>#\\1</a>") %>
+                    <%=  raw(processedDescription) %>
+                </div>
+                <div class="embed-post-info">
+                    <span class="embed-post-info-child1">by</span>
+                    <a target="_blank" href="/users/<%= @responseDict["screenName_s"] %>"><span class="embed-pub-name"><%=  @responseDict["screenName_s"] %></span></a>
+                    <div class="rny-embed-post-timeDetails">
+                        <span class="rny-lightgrey">posted</span> <br>
+                        <span class="rny-midgrey" id="postCreatedAt"></span>
+                        <span class="rny-lightgrey rny-post-updatetime" id="postUpdatedAt"></span>
+                    </div>
+                </div>
+                <div class="embed-subscribe">
+                    <a href="#" class="subscribe-btn popUp">SUBSCRIBE TO THIS POST</a>
+                </div>
+                <div class="embed-poweredby">
+                    <a href="#">
+                        <span class="embed-poweredby-child1">powered by</span>
+                        <span class="embed-poweredby-child2">Rnyoo</span>
+                    </a>
+                </div>
+            </div>
+            <div class="embed-code"><button class="embedCodeCopy">copy this code</button></div>
+            <div class="embed-code-div">
+                <p>
+                    <textarea class="embedCopytextarea">
+                    </textarea>
+                </p>
+            </div>
+        </div>
+        <!-- The Video Modal -->
+        <div id="modalVideo" class="modal1">
+            <div class="modal-content1">
+                <span class="closeVideo"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+                <video id="rnyooVideo" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                    </p>
+                </video>
+            </div>
+        </div>
+        <!-- The Audio Modal -->
+        <div id="modalAudio" class="modal1">
+            <div class="modal-content1">
+                <span class="closeAudio"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+                <audio id="rnyooAudio" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                    <p class="vjs-no-js">
+                        To view this video please enable JavaScript, and consider upgrading to a web browser that
+                        <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 Audio</a>
+                    </p>
+                </audio>
+            </div>
+        </div>
+        <!-- download app popup  -->
+        <div id="rny_app_download">
+            <div class="app-download-wrapper">
+                <span class="rny-app-close">close</span>
+                <div class="download-appImg">
+                    <img src="<%= static_path(@conn, "/images/mobile_icon.png") %>">
+                </div>
+                <div class="download-appTxt">
+                    <span class="app-download-text">Want to do more with Rnyoo?</span>
+                    <a href="#"><img src="<%= static_path(@conn, "/images/play_icon.png") %>" width="150px;" alt="rny-image"></a>
+                </div>
+            </div>
+        </div>
+        <!-- download app  popup end  -->
+
+        <script type="text/javascript"> 
+         var adapter = <%= raw(@responseJson) %>;
+         $(document).ready(function() {
+             rnyooEmbedDataBind(adapter);
+         });
+        </script>
+
+    <!-- copy embeded text -->
+        <script type="text/javascript">
+         // download app popup
+             $(document).on("click", ".popUp", function(){
+                   $("#rny_app_download").stop().fadeIn(500);
+             });
+             $(".rny-app-close").click(function(){
+                   $("#rny_app_download").stop().fadeOut(500);
+             });
+         var embedCodeCopy = document.querySelector('.embedCodeCopy');
+         embedCodeCopy.addEventListener('click', function(event) {
+         var copyTextarea = document.querySelector('.embedCopytextarea');
+         copyTextarea.select();
+         try {
+             var successful = document.execCommand('copy');
+             var msg = successful ? 'successful' : 'unsuccessful';
+         } 
+         catch (err) {
+         }
+     });
+     var protoDomain  = location.protocol+'//'+location.hostname+(location.port ? ':'+location.port: '');
+     var postUrl = protoDomain + '/post/i480/' + adapter.rpostid_s;
+     var embedCode = '<iframe src="' +postUrl  + '" width="480" height="600" frameborder="0"></iframe>'
+     $(".embedCopytextarea").val(embedCode);
+    </script>
+    </body>
+</html>

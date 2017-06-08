@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Rnyoo</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="keywords" content="" />
+		<!--css-->
+		<link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+		<link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+		<!--js-->
+		<script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+		<script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+		<!--fonts-->
+		<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+	</head>
+	<body>
+		<!-- header section -->
+	      <%= render Rnyoo.SharedView, "_search_bar.html", conn: @conn %>
+		<!-- header section end -->
+
+
+	<!-- terms and conditions content section -->
+		<div class="container" id="about">
+			<h1 class="prvcy-polcy-header">ABOUT RNYOO</h1>
+			<div style="text-align: justify;">
+			<p class="about-content">
+				We designed this privacy policy (“Privacy Policy”) to help you understand what information RNYOO collects, how RNYOO uses it, how it may be shared, and what choices you have. This Privacy Policy governs the products and services we offer through the RNYOO website, RNYOO applications for mobile devices, and the Information and Services as defined in our Terms of Use Agreement (collectively the “Website” or “RNYOO”). When you use the Website, you consent to our collection, use and disclosure of information about you as described in this privacy policy. Additionally, our Terms of Use Agreement is incorporated by reference into this privacy policy. The terms “we,” or “our,” refer to RNYOO Inc., a Delaware corporation, headquartered in _______, California in the United States.
+				By using our Website you understand and agree that we are providing a platform for you to post content, annotations, tags, comments, materials, or send any messages, submit any ideas or feedback, or otherwise participate in any RNYOO forum. Any postings, messages, text, photos, audio/visual works, information, suggestions, feedback, reviews or content provided by you is collectively referred to herein as "Content"</p>
+			<p class="about-content">
+				Our Privacy Policy applies to all of the services offered by RNYOO and its affiliates, and services offered on other sites (such as our advertising services). Our Privacy Policy does not apply to services offered by other companies or individuals, including products or sites that may be displayed to you in search results, sites that may include RNYOO services, or other sites linked from our services. Our Privacy Policy does not cover the information practices of other companies and organizations who advertise our services, and who may use cookies, pixel tags and other technologies to serve and offer relevant ads.
+				Our Privacy Policy applies to all visitors, users, and others who access the Service ("Users").</p>
+			<p class="about-content">
+				We collect information that you provide us directly or automatically when you use the Website.
+				We may use the information for purposes such as to: provide the Website’s functionality, improve the Website’s quality, personalize your experience, track usage of the Website, provide feedback to businesses and professionals whose products or services are listed on the Website, display relevant advertising, evaluate the success of our advertising, provide customer support, message you (in ways described by this privacy policy and managed by you in your account settings), back up our systems and allow for disaster recovery, enhance the security of the Website, fulfill transactions authorized by you on the Website, and comply with legal obligations.</p>
+		</div>
+		</div>
+	<!-- end terms and conditions content section -->
+	      <%=  render Rnyoo.SharedView, "_footer.html", conn: @conn %>
+	</body>
+</html>

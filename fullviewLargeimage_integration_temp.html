@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html style="background-color: black !important;">
+
+<head>
+    <title>Rnyoo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="" />
+    <link href="https://vjs.zencdn.net/5.12.6/video-js.css" rel="stylesheet">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
+    <link rel="stylesheet" href="<%= static_path(@conn, "/css/vendor.css") %>">
+    <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
+    <script src="<%= static_path(@conn, "/js/vendor.js") %>"></script>
+    <script src="https://vjs.zencdn.net/5.12.6/video.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/3.6.12/videojs-contrib-hls.js"></script>
+    <!--fonts-->
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,400italic,300italic,300,600,700' rel='stylesheet' type='text/css'>
+</head>
+<!--these inline styles are mandatory for video and audio players-->
+<style type="text/css">
+.video-js {
+    font-size: 10px;
+    color: #fff;
+}
+
+.vjs-default-skin .vjs-big-play-button {
+    font-size: 3em;
+    line-height: 80px;
+    height: 80px;
+    width: 80px;
+    border: 4px solid #00AEEF;
+    border-radius: 50%;
+    left: 50%;
+    top: 50%;
+    margin-left: -40px;
+    margin-top: -40px;
+}
+
+.video-js .vjs-control-bar,
+.video-js .vjs-big-play-button,
+.video-js .vjs-menu-button .vjs-menu-content {
+    background-color: #00AEEF;
+    background-color: #00aeef;
+}
+
+.video-js .vjs-slider {
+    background-color: #00AEEF;
+    background-color: rgba(0, 174, 239, 0.5);
+}
+
+.video-js .vjs-volume-level,
+.video-js .vjs-play-progress,
+.video-js .vjs-slider-bar {
+    background: #fff;
+}
+
+.video-js .vjs-load-progress {
+    background: ligthen(#00AEEF, 25%);
+    background: rgba(0, 174, 239, 0.5);
+}
+
+.video-js .vjs-load-progress div {
+    background: ligthen(#00AEEF, 50%);
+    background: rgba(0, 174, 239, 0.75);
+}
+
+.vjs-big-play-button {
+    border-radius: 50% !important;
+    height: 50px !important;
+    width: 50px !important;
+    margin-right: -25px !important;
+    margin-left: -25px !important;
+}
+
+#modalAudio .vjs-big-play-button {
+    left: 50%;
+    top: -40px;
+}
+</style>
+
+<body style="background-color: #080808 !important;margin: 0px">
+    <div class="container rny-container" style="margin-top: 0px !important;">
+        <div class="row">
+            <div class="rny-flex2">
+                <div class="rny-mobileview-zoomblock" id="zoomb">
+                    <ul>
+                        <li><a href="/posts"><img src="<%= static_path(@conn, "/images/back.png") %>" id="fullview_back" class="rny-embed-icon"></a></li>
+                        <li><a class="psotinfo_showhide">Post Info</a></li>
+                        <li>
+                            <button class="rny-mobileviewzoommbutton" id="normal_image"><span>N</span></button>
+                        </li>
+                        <li>
+                            <button class="rny-mobileviewzoommbutton" id="zoom_out_button"><span> -</span></button>
+                        </li>
+                        <li>
+                            <button class="rny-mobileviewzoommbutton" id="zoom_in_button"><span> +</span></button>
+                        </li>
+                        <li class="fullviewZwidth"><span class="mobile-post-img" id="hide"><img src="<%= static_path(@conn, "/images/hide.png") %>" alt=""> hide</span><span class="mobile-post-img" id="show"><img src="<%= static_path(@conn, "/images/show.png") %>" alt="">show</span></li>
+                        <li><img src="<%= static_path(@conn, "/images/embed.png") %>" class="rny-embed-icon"></li>
+                    </ul>
+                </div>
+                <div class="rny-fullviewimg-container">
+                    <img class="img-responsive imgCls" id="pod_image" src="<%= @responseDict["pod"]["podImage"]["jpgUrl"] %>" alt="">
+                    <span class="tap-to-view" id="showhotspots">
+                        TAP TO VIEW
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--detect iphone safari browser-->
+    <div class="ios-detector">
+        <div style="width:80%;display:inline-block;text-align: left;">Pinch-Zoom and other features on the image might not work as expected on iOS Safari.
+            <br> For Best Experience View this on Chrome or other modern mobile browsers</div> <span id="closeios_detector">close</span></div>
+    <!-- post info block(onclick post info this block will dsplay)  -->
+    <div class="fullview-postInfo" id="postInfo" style="display: none;">
+        <div class="rny-flex" style="min-height: 500px;">
+            <div class="rny-header">
+                <%= if @responseDict["postTtl"] do %>
+                    <img src="<%= static_path(@conn, "/images/icon_clock.png") %>" alt="#">
+                    <span id="postTtl"></span>
+                    <%= end %>
+            </div>
+            <div class="rny-publisher">
+                <span class="rny-avatar"> <img src="<%= @responseDict["avatar"] %>" onError="this.onerror=null;this.src='https://rnyooassets.s3.amazonaws.com/avatars/default.png';" alt=""> </span>
+                <span class="rny-pub-name"><a target="_blank" href="/users/<%= @responseDict["screenName_s"] %>"><%=  @responseDict["screenName_s"] %></a></span>
+                <br>
+            </div>
+            <div class="rny-post-description">
+                <% processedDescription =  Regex.replace(~r/#(\w+)/, @responseDict["postDescription_s"], "<a target='_blank' href='/search?in=keywords&q=\\1' class='postinfo-hashtags'>#\\1</a>") %>
+                    <%=  raw(processedDescription) %>
+            </div>
+            <div class="rny-post-timeDetails">
+                <span class="rny-lightgrey">posted</span>
+                <br><span class="rny-midgrey" id="postCreatedAt"></span><span class="rny-lightgrey rny-post-updatetime" id="postUpdatedAt"></span>
+            </div>
+            <div class="rny-post-locationDetails">
+                <%= if @responseDict["location_s"] do %>
+                    <span class="rny-lightgrey">picture taken at</span>
+                    <br><span class="rny-midgrey"><%= @responseDict["location_s"] %></span>
+                    <%= end %>
+            </div>
+            <div class="rny-btn-flex" id="channels">
+            </div>
+            <div class="rny-commentSection">
+                <ul class="rny-likes">
+                    <li class="popUp"><a class="rny-lightgrey" href="#"><img src="<%= static_path(@conn, "/images/like.png") %>">
+                            <%= if @responseDict["postLikeCount"] do %>
+                                <%= @responseDict["postLikeCount"] %>
+                            <% else %>
+                                0
+                            <%= end %></a>
+                    </li>
+                    <li class="popUp">
+                        <%= if @responseDict["noOfViews"] do %>
+                            <a class="rny-lightgrey" href="#"><img src="<%= static_path(@conn, "/images/view.png") %>"> <%= @responseDict["noOfViews"] %> views </a>
+                            <% else %>
+                                0 views
+                                <%= end %>
+                    </li>
+                </ul>
+                <ul class="rny-comments">
+                    <li class="popUp">
+                        <a class="rny-lightgrey" href="#">
+                            <%= if @responseDict["podCommentCount"] do %>
+                                <%= @responseDict["podCommentCount"] %>
+                                    <% else %>
+                                        0
+                                        <%= end %>
+                                            post comments
+                        </a>
+                    </li>
+                    <li class="rny-comment-lidot">&#183;</li>
+                    <% hotspotCommentCount = 0 %>
+                        <li class="popUp">
+                            <a class="rny-lightgrey" href="#">
+                                <%= if @responseDict["hotspotStats"] do %>
+                                    <%= for {k, v} <- @responseDict["hotspotStats"] do %>
+                                        <%= hotspotCommentCount = hotspotCommentCount +   v["commentCount"] %>
+                                            <%= end %>
+                                                <% else %>
+                                                    0
+                                                    <%= end %>
+                                                        hotspot comments</a>
+                        </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!-- post info block end  -->
+    <!-- The Video Modal -->
+    <div id="modalVideo" class="modal1">
+        <div class="modal-content1">
+            <span class="closeVideo"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+            <video id="rnyooVideo" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a>
+                </p>
+            </video>
+        </div>
+    </div>
+    <!-- The Audio Modal -->
+    <div id="modalAudio" class="modal1">
+        <!-- Modal content -->
+        <div class="modal-content1-audio">
+            <span class="closeAudio"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+            <audio id="rnyooAudio" class="video-js" controls preload="auto" width="100%" height="100%" data-setup='{ "controls": true, "autoplay": false, "preload": "auto" , "aspectRatio": "640:480", "poster": "/images/rnyoo-video-icon.jpg"}'>
+                <p class="vjs-no-js">
+                    To view this video please enable JavaScript, and consider upgrading to a web browser that
+                    <a href="https://videojs.com/html5-video-support/" target="_blank">supports HTML5 Audio</a>
+                </p>
+            </audio>
+        </div>
+    </div>
+    <!-- The Embed Modal -->
+    <div class="embed-modal" id="embedModal">
+        <div class="container embed-container">
+            <span id="close_id" class="close" tabindex='-1'><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+            <div class="embed-size">choose a size</div>
+            <div class="embed-pixel-choose">
+                <span class="embed-pixel-choose-640 textcolor">640px</span>
+                <span class="embed-pixel-choose-480">480px</span>
+            </div>
+            <div class="embed-block">
+                <div class="iframe-class1" id="iframe_640">
+                    <iframe width="100%" height="700px;" frameBorder="0" class="iframe-class1" src="/embed_640iframe/<%= @responseDict[" rpostid_s "] %>"></iframe>
+                </div>
+                <div class="iframe-class2" id="iframe_480">
+                    <iframe width="100%" height="700px;" frameBorder="0" src="/embed_480iframe/<%= @responseDict[" rpostid_s "] %>"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--embed block end-->
+    <!-- download app popup  -->
+    <div id="rny_app_download">
+        <div class="app-download-wrapper">
+            <span class="rny-app-close"><img src="<%= static_path(@conn, "/images/cancel.png") %>"></span>
+            <div class="download-appImg">
+                <img src="<%= static_path(@conn, "/images/mobile_icon.png") %>">
+            </div>
+            <div class="download-appTxt">
+                <span class="app-download-text">Want to do more with Rnyoo?</span>
+                <a href="#"><img src="<%= static_path(@conn, "/images/play_icon.png") %>" width="150px;" alt="rny-image"></a>
+            </div>
+        </div>
+    </div>
+    <!-- download app  popup end  -->
+</body>
+<script type="text/javascript">
+$(document).ready(function() {
+
+    //pod image resize for adjusting the screen
+    var img_h, screen_h, container_h, zoombar_h;
+    img_h = parseInt($("img#pod_image").css("height"));
+    screen_h = parseInt($(window).height()) - 2; //2px difference (borderwith 2px missing from screen height) 
+    container_h = parseInt($(".rny-fullviewimg-container").css("height"));
+    zoombar_h = parseInt($('#zoomb').css("height"));
+    if (img_h > screen_h) {
+        $("img#pod_image").css("max-height", screen_h - zoombar_h);
+        $("img#pod_image").css("max-width", "100%");
+        $(".rny-fullviewimg-container").css("height", screen_h - zoombar_h);
+    } else {
+        $("img#pod_image").css("max-height", "100%");
+        $("img#pod_image").css("max-width", "100%");
+        $(".rny-fullviewimg-container").css("height", screen_h - zoombar_h);
+    }
+    var adapter = <%= raw(@responseJson) %>;
+    rnyooDataBind(adapter); //calling function from rnyoo.js for binding data
+
+    //fullview postinfo details
+    $('.psotinfo_showhide').click(function(event) {
+        event.stopPropagation();
+        $(".fullview-postInfo").slideToggle();
+    });
+    $(".fullview-postInfo").on("click", function(event) {
+        event.stopPropagation();
+    });
+
+    // post info block will close click out side of block
+    $(document).on("click", function() {
+        $(".fullview-postInfo").hide();
+    });
+
+    //embed modal
+    $("#rny_Embed").click(function() {
+        $("#embedModal").show();
+    });
+    $("#close_id").click(function() {
+        $("#embedModal").hide();
+    });
+
+    // embed iframes color toggle  
+    $('.embed-pixel-choose span').click(function(e) {
+        e.preventDefault();
+        $(this).addClass('textcolor').siblings().removeClass('textcolor');
+    });
+
+    //embed iframes toggle
+    $(".embed-pixel-choose-640").click(function() {
+        $("#iframe_640").show();
+        $("#iframe_480").hide();
+    });
+    $(".embed-pixel-choose-480").click(function() {
+        $("#iframe_640").hide();
+        $("#iframe_480").show();
+    });
+
+    // download app popup
+    $(".popUp").click(function() {
+        $("#rny_app_download").show();
+    });
+    $(".rny-app-close").click(function() {
+        $("#rny_app_download").hide();
+    });
+});
+</script>
+
+</html>
