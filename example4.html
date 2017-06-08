@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <link href="css/style.css" rel="stylesheet" type="text/css" media="all" /> -->
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+.rects
+{
+	fill: red;
+	animation-duration: 10s;
+	animation-name:move;
+	animation-timing-function: linear;
+}
+
+@keyframes move {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100px);
+  }
+}
+</style>
+<body style="text-align: center;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var w = 800;
+	var h = 400;
+	var svg = d3.select("body").append("svg").attr("width", w).attr("height",h);
+	var data = [5, 98 ,21, 3, 9, 4, 46, 67, 32,3];
+	var bars = svg.selectAll("rect").data(data).enter().append("rect");
+	var x = d3.scaleLinear()
+				.domain([0, d3.max(data)])
+				.range([0,w]);
+	var y = d3.scaleLinear()
+				.domain([0,data.length])
+				.range([0,h]);
+				xdomain = [];
+				ydomain = [];
+	for (var i = 0; i < data.length; i++) {
+		xdomain[i] = x(data[i]);
+	}
+	console.log(xdomain);
+	for (var i = 0; i < data.length; i++) {
+		ydomain[i] = y(data[i]);
+	}
+	console.log(ydomain);
+	var chart = bars.attr("width", function(d){return x(d)})
+					.attr("height", function(d,i){return y(1)-1})
+					.attr("x", 0)
+					.attr("y", function(d,i){return y(i)})
+					.attr("class", "rects");
+	var rextdata = chart.select("text").data(data).enter().append("text").text(function(d){return d})
+						.attr("x",function(d,i){return x(d)-20})
+						.attr("y",function(d,i){return y(i)})
+						.attr("dy",function(d,i){return y(1)/2})
+						.attr("dx", 4)
+						.attr("fill", "#fff");
+</script>

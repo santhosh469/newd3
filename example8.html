@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+
+</style>
+<body style="text-align: center;background-color:#f1f1f1;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var data = [{ name:"Ajay", value:32 },
+				{ name:"Balu", value:51 },
+				{ name:"Cherry", value:93 },
+				{ name:"Dhaya", value:70 },
+				{ name:"Elvik", value:20 },
+				{ name:"Fathima", value:59 },
+				{ name:"Ganesh", value:10 },
+				{ name:"Hemanth", value:45 },
+				{ name:"Indhu", value:69 },
+				{ name:"Jaya", value:120 }];
+	var height = 500;
+	var width = 600;
+	var margin = {left:30, right:30, top:30, bottom:30};
+	var h = height - margin.top - margin.bottom;
+	var w = width - margin.left - margin.right;
+	var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
+	var color = d3.scaleLinear().domain([10,100]).range(["red", "balue"]);
+	var x = d3.scaleBand()
+				.domain(data.map(function(d){return d.name}))
+				.range([0,w]).padding(0.1); // padding() for gap between the bars on x-axis
+				console.log(x(2));
+	var y = d3.scaleLinear()
+				.domain([0,d3.max(data, function(d){return d.value})])
+				.range([h,0]);
+	var g = svg.append("g").attr("transform", "translate("+ margin.left +","+ margin.top +")");
+
+	g.selectAll(".bars").data(data).enter().append("rect")
+											.attr("width", x.bandwidth())
+											.attr("y", function(d){return y(d.value)})
+											.attr("fill", color)
+											.transition()
+											.duration(2000)
+											.delay(function (d, i) {return i * 50;})
+											.attr("x", function(d){return x(d.name)})
+											.attr("height", function(d,i){return h-y(d.value)});// h-y(d.value for rotaing the x-axis)
+	g.append("g").attr("transform", "translate(0, "+ h +")").call(d3.axisBottom(x));
+	g.append("g").call(d3.axisLeft(y));
+</script>

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link href="css/style.css" rel="stylesheet" type="text/css" media="all" />
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+	
+</style>
+<body style="text-align: center;">
+	<svg width="1000px" height="1000px">
+		<circle cx="2" cy="40" r="20"></circle>
+		<circle cx="7" cy="40" r="20"></circle>
+		<circle cx="12" cy="40" r="20"></circle>
+	</svg>
+</body>
+<script type="text/javascript">
+	var circles = d3.selectAll("circle");
+	circles.style("fill",  "blue")
+	.attr("cx", function () {
+		return Math.random() * 700;
+		})
+	.attr("cy",function(){ return Math.random()*700});
+</script>

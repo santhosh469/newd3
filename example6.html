@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <link href="css/style.css" rel="stylesheet" type="text/css" media="all" /> -->
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+/*.svgStyle
+{
+	padding-top: 100px;
+	padding-left: 50px;
+	padding-bottom: 50px;
+	padding-right: 50px;
+}*/
+.bars
+{
+	fill: red;
+}
+</style>
+<body style="text-align: center;background-color:#f1f1f1;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var w = 600;
+	var h = 400;
+	var margin = {left:30, right:30, top:30, bottom:30};
+	var data = [5, 64, 21, 9, 80, 55, 15, 120, 40, 21, 67, 13]
+	var width = w - margin.left - margin.right;
+	var height = h - margin.top - margin.bottom;
+	var svg = d3.select("body").append("svg").attr("width", w).attr("height", h);
+	var g = svg.append("g").attr("transform", "translate("+ margin.left +", " + margin.right + ")");
+		
+	var x = d3.scaleLinear()
+				.domain([0, data.length])
+				.range([0,width]);
+	var y = d3.scaleLinear()
+				.domain([0,d3.max(data)])
+				.range([height,0]);
+	var color = d3.scaleLinear()
+				.domain([0,100])
+				.range(["red","blue"]);
+
+	// 		var	xdomain = [];
+	// 		var	ydomain = [];
+	// for (var i = 0; i < data.length; i++) {
+	// 	xdomain[i] = x(data[i]);
+	// }
+	// console.log(xdomain);
+	// for (var i = 0; i < data.length; i++) {
+	// 	ydomain[i] = y(data[i]);
+	// }
+	// console.log(ydomain);
+	var xaxis = d3.axisBottom(x).ticks(10);
+	g.append("g").attr("transform", "translate(0," + height + ")").call(xaxis);
+	var yaxis = d3.axisLeft(y).ticks(10);
+	g.append("g").attr("transform", "translate(0,0)").call(yaxis);
+	var rects = g.selectAll("rect").data(data).enter().append("rect")
+														.attr("width", 30)
+														.attr("height", function(d,i){return h-y(d)})
+														.attr("x", function(d,i){return x(d)})
+														.attr("y", 0)
+														.attr("fill", color);
+														// .transition()
+														// .duration(2000)
+														// .delay(function (d, i) {return i * 50;})
+														// .attr("height", function(d,i){return h-d*2});
+														// .attr("class", "bars");
+	// var text = rects.select("text").data(data).enter().append("text").attr("x", function(d,i){return i*(w/data.length)}).attr("y", function(d,i){return h-100}).attr("dx",10).text(function(d){return "s"});
+</script>

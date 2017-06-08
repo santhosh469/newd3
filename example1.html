@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+	.pfont
+	{
+		font-weight: 700;
+		font-size: 20px;
+		color: red;
+	}
+	#txtanimate
+	{
+
+	}
+</style>
+<body style="text-align: center;">
+<script type="text/javascript">
+	d3.select("body").append("p").attr("class","pfont").text("Hey!!!!!!!!! I am here");
+	var svg = d3.select("body").append("svg").attr("width","400px").attr("height","400px");
+		svgbody = svg.append("rect").attr("height", "300px").attr("width","300px").attr("rx","40").attr("ry","40").attr("fill", "#F44336").attr("x","40").attr("y","40");
+		svgtext = svg.append("g").attr("id","txtanimate").append("text").text("GLEECUS").attr("fill","#fff").attr("x","80").attr("y","200").attr("font-size","50px").attr("stroke-dasharray","2,2")
+		.transition()
+		.duration(2000)
+		.delay(50);
+</script>
+</body>

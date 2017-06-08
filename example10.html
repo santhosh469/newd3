@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+
+</style>
+<body style="text-align: center;background-color:#f1f1f1;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var width = 900;
+	var height = 500;
+
+	var radius = Math.min(width,height)/2;// radious for pie chat 
+
+	var data = [
+				{language: "java", "percentage": 9},
+				{language: "python", "percentage": 8},
+				{language: "javascript", "percentage": 20},
+				{language: "oracle", "percentage": 15},
+				{language: "c", "percentage": 17}
+				]
+	var colors = d3.scaleOrdinal().range(['#A60F2B', '#648C85', '#B3F2C9', '#528C18', '#C3F25C']);
+	var svg = d3.select("body").append("svg").attr("width", width).attr("height", height).append("g").attr("transform", "translate("+ width/2 +", "+ height/2 +")");
+
+	var arc = d3.arc().innerRadius(0).outerRadius(radius); // to define the radius of pie chart we are using arc method
+	var arctext = d3.arc().innerRadius(radius-60).outerRadius(radius-60);
+	var pie = d3.pie().value(function(d){return d.percentage}).sort(null); // start and end angles of each segment in pie
+	var path = svg.selectAll("path")
+									.data(pie(data))
+									.enter()
+									.append("g");
+	path.append("path")
+					.transition()
+					.duration(6000)
+					
+					.delay(function (d, i) {return i * 200;})
+					.attr("d", arc)
+					.attr("fill", function(d,i){return colors(d.data.percentage)})
+					.attr("stroke", "#fff");
+	path.append("text")
+					// .attr("dy", ".85em")
+					.text(function(d,i){return d.data.language})
+					.attr("transform", function(d) { return "translate(" + arctext.centroid(d) + ")"; });
+
+</script>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+
+</style>
+<body style="text-align: center;background-color:#f1f1f1;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var height = 500;
+	var width = 400;
+	var margin = {left:30, right:30, top:30, bottom:30};
+
+	var data = [[4,2], [10,15], [15,5], [7,12]];
+	var h = height - margin.top - margin.bottom;
+	var w = width - margin.left - margin.right
+	var svg = d3.select("body").append("svg").attr("width", width).attr("height", height);
+
+	var x = d3.scaleLinear().domain([0, d3.max(data, function(d)
+		{return d[0]})]).range([0,w]);
+	var y = d3.scaleLinear().domain([0, d3.max(data, function(d)
+		{return d[1]})]).range([h,0]);
+	var g = svg.append("g").attr("transform", "translate("+ margin.left +","+ margin.top +")");
+
+		g.selectAll("circle").data(data).enter().append("circle")
+												.attr("cx", function(d){return x(d[0])})
+												.attr("cy", function(d){return y(d[1])})
+												.transition()
+												.duration(1500)
+												.delay(function (d, i) {return i * 50;})
+												.attr("r", function(d){return d[0]})
+												.attr("fill", "red");
+
+		g.append("g").attr("transform", "translate(0, "+ h +")").call(d3.axisBottom(x)).append("text").attr("x", w).attr("y", -5).style("text-anchor", "end").text("x-axis").attr("fill", "red");
+		g.append("g").call(d3.axisLeft(y)).append("text").attr("x", 2).attr("y", -10).style("text-anchor", "end").text("y-axis").attr("fill", "red").attr("transform", "rotate(-90)");
+</script>

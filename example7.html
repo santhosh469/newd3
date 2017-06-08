@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+.svgStyle
+{
+	padding-top: 100px;
+	padding-left: 40px;
+	padding-bottom: 50px;
+	padding-right: 50px;
+}
+.bars
+{
+	fill: red;
+}
+</style>
+<body style="text-align: center;background-color:#f1f1f1;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var w = 700;
+	var h = 500;
+	var margin = {top:50,left:50,right:50,bottom:50}
+	var svg = d3.select("body").append("svg").attr("width", w).attr("height", h).attr("class", "svgStyle");
+	var data = [10, 21, 67, 81, 57, 99, 41];
+
+	var xaxis = d3.scaleLinear().domain([0,d3.max(data)]).range([0,w]);
+	var color = d3.scaleLinear().domain([0,100]).range(["red","blue"]);
+	var yaxis = d3.scaleLinear().domain([0,data.length]).range([h,0]);
+
+	var linex = d3.axisBottom(xaxis).ticks(10);
+	var liney = d3.axisLeft(yaxis).ticks(10);
+
+	svg.append("g").attr("class", "axis").attr("transform", "translate(0," + h + ")").call(linex);
+	svg.append("g").call(liney);
+
+	var rects = svg.selectAll("rect").data(data).enter().append("rect")
+														.attr("width", 50)
+														.attr("x", function(d,i){return i*(w/data.length)})
+														.attr("y", function(d,i){return h-(d*2)})
+														.attr("height", 0)
+														.attr("fill", color)
+														.transition()
+														.duration(2000)
+														.delay(function (d, i) {return i * 50;})
+														.attr("height", function(d,i){return d*2;});
+														// .attr("transform", "translate(0,"+ h +")");
+</script>

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>d3 examples</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- <link href="css/style.css" rel="stylesheet" type="text/css" media="all" /> -->
+	<script src="js/d3.js"></script>
+</head>
+<style type="text/css">
+	.pathanimation
+	{
+		stroke-dasharray: 20;
+		animation: snake 5s linear;
+	}
+	@keyframes snake {
+		from {
+			stroke-dashoffset: 10;	
+		}
+  to {
+    stroke-dashoffset: 1000;
+  }
+}
+</style>
+<body style="text-align: center;">
+
+</body>
+</html>
+<script type="text/javascript">
+	var linedata = [{"x":1, "y":10}, {"x":10, "y":35}, {"x":30, "y":44}, {"x":41, "y":65}, {"x":57, "y":70}, {"x":60, "y":89}, {"x":30, "y":69}, {"x":20, "y":49}, {"x":1, "y":10}]
+	var linepath = d3.line()
+							.x(function (d,i) { return d.x;})
+							.y(function (d,i) { return d.y;});
+	var svg = d3.select("body").append("svg").attr("width","500px").attr("height","500px");
+	var path = svg.append("path").attr("d", linepath(linedata)).attr("fill", "none").attr("stroke", "black").attr("stroke-width", "2").attr("class", "pathanimation");
+</script>
